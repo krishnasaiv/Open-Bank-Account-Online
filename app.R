@@ -94,11 +94,9 @@ ui <- dashboardPage(
                                                              column(10, 
                                                                     tags$strong(tags$u(tags$p("Note:"))),
                                                                     tags$p("* To choose a default avialable account type, select 'Standard' option."),
-                                                                    # tags$br(),
                                                                     tags$p("* To tailor your banking experience to suit your needs, select the 'Custom' option."))
                                                            )
                                                        ),
-                                                       
                                                        fluidRow(column(11), column(1, actionButton(inputId = "nxt_main", label = "Next", icon = icon("arrow-right"))))
                                               ),
                                               tabPanel(title = "Standard pricing", value = "standard_main",
@@ -106,10 +104,8 @@ ui <- dashboardPage(
                                                            collapsible = F, solidHeader = T, title = "Merchant Demographics", status = "primary",
                                                            prettyRadioButtons(shape = "round",  animation = 'jelly',inputId = "primary_cust_type", label = "Primary Customer Type:", choices = c( "Consumers", "Other Businesses"),inline = T),
                                                            prettyRadioButtons(shape = "round",  animation = 'jelly',inputId = "foreign_issued_txns",   label = "Foreign Issued Transactions:", choices = c( "Few", "Many"),inline = T),
-                                                           prettyRadioButtons(shape = "round",  animation = 'jelly',inputId = "equipment_type", label = "Equipment/POS Type:", choices = c( "Chase Mobile Checkout", "Chase Blue Terminal", "Virtual Terminal", "Authorize.Net"), 
-                                                                              selected ="Chase Mobile Checkout",
-                                                                              inline = T)
-                                                           
+                                                           prettyRadioButtons(shape = "round",  animation = 'jelly',inputId = "equipment_type", label = "Equipment/POS Type:", 
+                                                                              choices = c( "Chase Mobile Checkout", "Chase Blue Terminal", "Virtual Terminal", "Authorize.Net"),selected ="Chase Mobile Checkout", inline = T)
                                                        ),
                                                        box(width=12, 
                                                            collapsible = F, solidHeader = T, title = "Standard Pricing Options", status = "primary",
@@ -438,14 +434,11 @@ ui <- dashboardPage(
                                                        fluidRow(column(1, actionButton(inputId = "prev_summary", label = "Prev", icon = icon("arrow-left"))))
                                               )
                                    )
-                           )#,
-                           # ================== Search Models ==================
-                           # tabItem(tabName = "search")#,
-                           # # ================== Guide ==================
-                           # tabItem(tabName = "guide")
-                         ))
+                           )
+                         )
+                )
   )
-  # )
+  
 )
 server <- function(input, output, session) {
   # ==========================================================================================
