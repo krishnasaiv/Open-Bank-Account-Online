@@ -121,14 +121,17 @@ ui <- dashboardPage(
                                               tabPanel(title = "Custom Pricing", value = "cstm_main",
                                                        
                                                        box(width = 12,
-                                                           collapsible = F,  solidHeader = T, title = "Methods of Payment", status = "primary", #collapsed = F, 
+                                                           collapsible = F,  solidHeader = T, title = "Methods of Operation", status = "primary", #collapsed = F, 
                                                            prettyCheckboxGroup(status = 'primary', inputId = "mop", label = NULL, 
-                                                                               choices = c("Credit", "PIN-Based Debit", "PINless Debit", "Electronic Check (ECP)", "UPI"), inline = T)
+                                                                               choices = c("Credit", "Debit", "Electronic Check (ECP)", "UPI", "Demat", "Forex"), inline = T)
                                                        ),
                                                        box(width = 12,
                                                            collapsible = F,  solidHeader = T, title = "Additional Products & Capabilities", status = "primary", #collapsed = F, 
                                                            prettyCheckboxGroup(status = 'primary',inputId = "processing_options", label = "Processing Options:", 
-                                                                               choices = c('Multi-Currency' = 'mc', 'Fraud Filter' = 'ff','Smart Insights' = 'au', 'ECP Advanced Verification' = 'ecp',
+                                                                               choices = c(
+                                                                                 'Smart Insights' = 'si', 'Fraud Filter' = 'ff', 
+                                                                                 'Auto Incre'
+                                                                                 'Multi-Currency' = 'mc',  'ECP Advanced Verification' = 'ecp',
                                                                                            'UPI Pro' = 'cncp', 'International Payments' = 'pcl3', 'PINless Management' = 'plbm', 'EMI on Debit' = 'ddr' ),  selected = character(0), inline = T),
                                                            # prettyCheckboxGroup(status = 'primary', inputId = "connectivity_products", label = "Connectivity Products:", 
                                                            #                     choices = c('NetConnect', 'Orbital Gateway',  'Frame Relay'),  inline = T),
@@ -503,10 +506,6 @@ server <- function(input, output, session) {
   #                                       Session Global Variables
   #==========================================================================================
   load_pages <- function(lst, en){
-    # print("................ Staus report ................")
-    # print(lst)
-    # print(en)
-    # print("..............................................")
     for(i in 1:length(en)){
       sel = paste0("#new li a[data-value='",lst[i], "']")
       # print(sel)
@@ -535,22 +534,12 @@ server <- function(input, output, session) {
   products_list <- c('au','cncp','pcl3','ff','plbm','ddr','ecp','mc')
   products_enabled <- c(F,F,F,F,F,F,F,F)
   products_selected <- c(F,F,F,F,F,F,F,F)
-  equipment_list <- c( "Chase Mobile Checkout", "Chase Blue Terminal", "Virtual Terminal", "Authorize.Net")
-  bundled_pricing_options_list <- c("Swiped: 2.60% + $0.10,<br/>Keyed: 3.50% + $0.10",
-                                    "2.90% +<br/> $0.25", 
-                                    "3.50% +<br/> $0.10",
-                                    "Credit: 2.21% <br/> Debit: 1.64%  + 0.2 $",
-                                    "Credit: 2.23% <br/> Debit: 1.67%  + 0.2 $",
-                                    "Credit: 2.50% <br/> Debit: 1.30%  + 0.2 $",
-                                    "Credit: 2.99% <br/> Debit: 2.99%  + 0.25 $")
+  
+  
   #==========================================================================================
   #                                       Run on Startup
   #==========================================================================================
   
-  output$architecture_image <- renderImage({
-    filename <- normalizePath(file.path('./arch.PNG'))
-    list(src = filename, width =1250, height = 675)
-  }, deleteFile = FALSE)
   output$i <- renderDataTable(expr = {InProgress}, options = list(pageLength = 10, lengthMenu = list(c(10, 20, -1), c('10', '20', 'All')), searchHighlight = TRUE))
   output$c <- renderDataTable(expr = {}, options = list(pageLength = 10, lengthMenu = list(c(10, 20, -1), c('10', '20', 'All')), searchHighlight = TRUE))
   output$e <- renderDataTable(expr = {}, options = list(pageLength = 10, lengthMenu = list(c(10, 20, -1), c('10', '20', 'All')), searchHighlight = TRUE))
