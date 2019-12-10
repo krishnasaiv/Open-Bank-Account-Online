@@ -998,227 +998,227 @@ server <- function(input, output, session) {
   #                                       Calculations
   #==========================================================================================
   
-  ach_fund_tansfer_rev <- eventReactive(c(input$ach_fund_transfer_fee, input$annual_ach_funds_transfers), 
-                                        {ifelse(is.na(input$ach_fund_transfer_fee * input$annual_ach_funds_transfers),0,input$ach_fund_transfer_fee * input$annual_ach_funds_transfers) })
-  wire_funds_transfer_rev <- eventReactive(c(input$wire_funds_transfer_fee, input$annual_wire_funds_transfers), 
-                                           {ifelse(is.na(input$wire_funds_transfer_fee * input$annual_wire_funds_transfers),0,input$wire_funds_transfer_fee * input$annual_wire_funds_transfers)})
-  rebate_net_sales_rev <- eventReactive(c(input$rebate_percent_on_net_volume, input$sales), 
-                                        {ifelse(is.na(input$rebate_percent_on_net_volume* input$sales),0,(input$rebate_percent_on_net_volume* input$sales))})
-  rebate_setup_rev <- eventReactive(c(input$rebate_setup),
-                                    {ifelse(is.na(input$rebate_setup),0,(input$rebate_setup))})
-  rebate_monthly_rev <- eventReactive(c(input$rebate_monthly), {ifelse(is.na(input$rebate_monthly),0, (input$rebate_monthly * 12))})
-  rebate_per_capture_rev   <- eventReactive(c(input$rebate_dollar_per_tran, input$txns), {ifelse(is.na(input$rebate_dollar_per_tran* input$txns),0,(input$rebate_dollar_per_tran* input$txns))})
-  
-  
-  other_rev <- reactive({sum(ach_fund_tansfer_rev() , wire_funds_transfer_rev() , rebate_net_sales_rev() , rebate_setup_rev() , rebate_monthly_rev() , rebate_per_capture_rev(), na.rm = T)})
-  
-  
-  #---------- Credit
-  auth_fee_rev <- reactive({ifelse( 'Credit' %in% input$mop & !is.na(input$auths * input$auth_fee),(input$auths * input$auth_fee),0)})
-  txn_fee_rev <- eventReactive(c(input$txn_fee, input$txns, input$mop),
-                               {ifelse( 'Credit' %in% input$mop & !is.na(input$txn_fee * input$txns),(input$txn_fee * input$txns),0)}
-  )
-  discount_rate_rev <- eventReactive(c(input$sales, input$discount_rate, input$mop), {ifelse( 'Credit' %in% input$mop & !is.na(input$sales * input$discount_rate),(input$sales * input$discount_rate),0)} )
-  
-  chargeback_fee_rev <- eventReactive(c(input$chargebacks, input$cback_fee, input$mop),
-                                      {ifelse( 'Credit' %in% input$mop & !is.na(input$chargebacks * input$cback_fee),(input$chargebacks * input$cback_fee),0)}
-  )
-  collection_fee_rev <- eventReactive(c(input$chargebacks, input$comp_fee, input$mop), 
-                                      {ifelse( 'Credit' %in% input$mop & !is.na(input$chargebacks * input$comp_fee),(input$chargebacks * input$comp_fee),0)}
-  )
-  voice_auth_rev <- eventReactive(c(input$voice_authorizations, input$voice_auth_rev_fee, input$mop), 
-                                  {ifelse( 'Credit' %in% input$mop & !is.na(input$voice_authorizations * input$voice_auth_rev_fee),(input$voice_authorizations * input$voice_auth_rev_fee),0)}
-  )
-  
-  paper_reporting_rev <- eventReactive(c(input$paper_reporting_fee, input$mop), 
-                                       {ifelse( 'Credit' %in% input$mop & !is.na(input$paper_reporting_fee ),(input$paper_reporting_fee * 12),0)}
-  )
-  monthly_maintainence_fee_rev <- eventReactive(c(input$monthly_maintainence_fee, input$mop),
-                                                {ifelse( 'Credit' %in% input$mop & !is.na(input$monthly_maintainence_fee ),(input$monthly_maintainence_fee * 12),0)}
-  )
-  application_fee_rev <- eventReactive(c(input$application_fee, input$mop), 
-                                       {ifelse( 'Credit' %in% input$mop & !is.na(input$application_fee),(input$application_fee),0)}
-  )
-  
-  credit_rev <- reactive({sum(auth_fee_rev() , txn_fee_rev() , discount_rate_rev() ,       chargeback_fee_rev() , collection_fee_rev() , voice_auth_rev() , paper_reporting_rev() , monthly_maintainence_fee_rev() , application_fee_rev(), na.rm = T)})
-  
-  observeEvent(credit_rev(), {
-    summ_table[summ_table$X_ == 'Credit Net Revenue', 'in_Dollars'] <<- credit_rev()
-    output$summ_table <- renderTable(expr = {formattable(summ_table)}, striped = T, bordered = T, spacing = "s")
-  })
-  
-  #---------- VAP
-  purchasing_card_level3_rev <- eventReactive(c(input$purchasing_card_level3_fee, input$purchasing_card_level3_txns, input$processing_options),
-                                              {ifelse('pcl3' %in% input$processing_options, input$purchasing_card_level3_fee * input$purchasing_card_level3_txns, 0)}
-  )
-  accnt_updater_match_rev <- eventReactive(c(input$accnt_updater_match_fee, input$accnt_updater_matches, input$processing_options), 
-                                           {ifelse('au' %in% input$processing_options, (input$accnt_updater_match_fee * input$accnt_updater_matches), 0)}
-  )
-  accnt_updater_montly_rev <- eventReactive(c(input$accnt_updater_montly_fee, input$processing_options), 
-                                            {ifelse('au' %in% input$processing_options, (input$accnt_updater_montly_fee * 12), 0)}
-  )
-  
-  visa_fraud_rev <- eventReactive(c(input$visa_fraud_fee, input$num_visa_records, input$processing_options, input$analytics_products), 
-                                  {ifelse('Credit' %in% input$mop & 'Fraud Advice Reporting' %in% input$analytics_products, (input$visa_fraud_fee * input$num_visa_records), 0)}
-  )
-  mc_fraud_rev <- eventReactive(c(input$mc_fraud_fee, input$num_mc_records, input$processing_options, input$analytics_products),
-                                {ifelse('Credit' %in% input$mop & 'Fraud Advice Reporting' %in% input$analytics_products, (input$mc_fraud_fee * input$num_mc_records), 0)}
-  )
-  pinless_bin_management_fee_rev <- eventReactive(c(input$pinless_bin_management_txn_fee, input$pinless_bin_management_txns, input$processing_options),
-                                                  {ifelse( 'plbm' %in% input$processing_options, (input$pinless_bin_management_txn_fee * input$pinless_bin_management_txns), 0)}
-  )
-  pinless_bin_management_montly_fee_rev <- eventReactive(c(input$pinless_bin_management_montly_fee, input$processing_options),
-                                                         {ifelse( 'plbm' %in% input$processing_options, (input$pinless_bin_management_montly_fee * 12), 0)}
-  )
-  multicurrency_rev <- eventReactive(c(input$fx_markup, input$non_usd_presentment_percent_vol, input$annual_gross_sales_vol, input$processing_options), 
-                                     {ifelse( 'mc' %in% input$processing_options, (input$fx_markup * input$non_usd_presentment_percent_vol * input$annual_gross_sales_vol), 0)}
-  )
-  
-  # Connectivity
-  netconnect_txn_rev <- eventReactive(c(input$netconnect_txn_fee, input$netconnect_txns, input$connectivity_products), 
-                                      {ifelse( 'NetConnect' %in% input$connectivity_products, (input$netconnect_txn_fee* input$netconnect_txns), 0)}
-  )
-  netconnect_batch_monthly_fee_rev <- eventReactive(c(input$netconnect_batch_monthly_fee, input$connectivity_products), 
-                                                    {ifelse( 'NetConnect' %in% input$connectivity_products, (input$netconnect_batch_monthly_fee * 12), 0)}
-  )
-  
-  orbital_gateway_per_item_transport_fee_rev <- eventReactive(c(input$orbital_gateway_per_item_transport_fee, input$orbital_gateway_txns, input$connectivity_products), 
-                                                              {ifelse( 'Orbital Gateway' %in% input$connectivity_products, (input$orbital_gateway_per_item_transport_fee* input$orbital_gateway_txns), 0)}
-  )
-  orbital_gateway_per_outlet_monthly_fee_rev <- eventReactive(c(input$orbital_gateway_per_outlet_monthly_fee, input$outlets_with_orbital_gateway_monthly_fee, input$connectivity_products), 
-                                                              {ifelse( 'Orbital Gateway' %in% input$connectivity_products, (input$orbital_gateway_per_outlet_monthly_fee* input$outlets_with_orbital_gateway_monthly_fee), 0)}
-  )
-  hostedpaypage_txn_rev <- eventReactive(c(input$hostedpaypage_txns, input$hostedpaypage_txn_fee, input$connectivity_products), 
-                                         {ifelse( 'Hosted Pay Page' %in% input$connectivity_products, (input$hostedpaypage_txns * input$hostedpaypage_txn_fee), 0)}
-  )
-  frame_relay_rev <- eventReactive(c(input$num_frame_relay_circuits, input$network_admin_fee, input$connectivity_products), 
-                                   {ifelse( 'Frame Relay' %in% input$connectivity_products, (input$num_frame_relay_circuits* input$network_admin_fee), 0)}
-  )
-  
-  # Security
-  safetech_encryption_per_item_fee_rev <- eventReactive(c(input$safetech_encryption_per_item_fee, input$safetech_encryption_items, input$security_products), 
-                                                        {ifelse( 'Safetech Encryption' %in% input$security_products, (input$safetech_encryption_per_item_fee * input$safetech_encryption_items), 0)}
-  )
-  safetech_encryption_ingenico_rev <- eventReactive(c(input$safetech_encryption_items, input$ingenico_percent_encyption_items, input$security_products), 
-                                                    {ifelse( 'Safetech Encryption' %in% input$security_products, (-0.005 * input$safetech_encryption_items * (1 - input$ingenico_percent_encyption_items) ), 0)}
-  )
-  safetech_encryption_monthly_fee_rev <- eventReactive(c(input$safetech_encryption_monthly_fee, input$security_products),
-                                                       {ifelse( 'Safetech Encryption' %in% input$security_products, (input$safetech_encryption_monthly_fee * 12), 0)}
-  )
-  
-  safetech_tokenization_monthly_fee_rev <- eventReactive(c(input$safetech_tokenization_monthly_fee, input$security_products), 
-                                                         {ifelse( 'Safetech Tokenization' %in% input$security_products, (input$safetech_tokenization_monthly_fee * 12), 0)}
-  )
-  safetech_tokenization_per_item_fee_rev <- eventReactive(c(input$safetech_tokenization_per_item_fee, input$safetech_tokenization_items, input$security_products), 
-                                                          {ifelse( 'Safetech Tokenization' %in% input$security_products, input$safetech_encryption_per_item_fee * input$safetech_tokenization_items, 0)}
-  )
-  
-  safetech_page_encryption_per_item_fee_rev <- eventReactive(c(input$safetech_page_encryption_per_item_fee, input$safetech_page_encryption_items, input$security_products),
-                                                             {ifelse( 'Safetech Page Encryption' %in% input$security_products, (input$safetech_page_encryption_per_item_fee * input$safetech_page_encryption_items), 0)}
-  )
-  safetech_page_encryption_per_item_contra_rev <- eventReactive(c(input$safetech_page_encryption_items, input$security_products), 
-                                                                {ifelse( 'Safetech Page Encryption' %in% input$security_products, (input$safetech_page_encryption_items * (-0.0013)), 0)}
-  )
-  
-  safetech_page_encryption_monthly_fee_rev <- eventReactive(c(input$safetech_page_encryption_monthly_fee, input$security_products), 
-                                                            {ifelse( 'Safetech Fraud' %in% input$security_products, (input$safetech_page_encryption_monthly_fee * 12), 0)}
-  )
-  safetech_fraud_per_item_fee_rev <- eventReactive(c(input$safetech_fraud_per_item_fee, input$safetech_fraud_items, input$security_products), 
-                                                   {ifelse( 'Safetech Fraud' %in% input$security_products, (input$safetech_fraud_per_item_fee * input$safetech_fraud_items), 0)}
-  )
-  safetech_fraud_per_item_contra_rev  <- eventReactive(c(input$safetech_fraud_items, input$safetech_fraud_per_item_fee, input$processing_options), 
-                                                       {ifelse( 'Safetech Fraud' %in% input$security_products, (
-                                                         if(input$safetech_fraud_per_item_fee < 0.07){0.5 * input$safetech_fraud_per_item_fee < 0.07}
-                                                         else if(input$safetech_fraud_items < 1000000){0.02*(0.3*(input$safetech_fraud_per_item_fee - 0.02))}
-                                                         else{-0.015 * 0.3*(input$safetech_fraud_per_item_fee - 0.02)}
-                                                       ), 0)}
-  )
-  
-  vap_rev <- reactive({sum(purchasing_card_level3_rev() , accnt_updater_match_rev() , accnt_updater_montly_rev() , 
-                           visa_fraud_rev() , mc_fraud_rev() , pinless_bin_management_fee_rev() , pinless_bin_management_montly_fee_rev() , multicurrency_rev() , netconnect_txn_rev() , 
-                           netconnect_batch_monthly_fee_rev() , orbital_gateway_per_item_transport_fee_rev() , orbital_gateway_per_outlet_monthly_fee_rev() , hostedpaypage_txn_rev() ,
-                           frame_relay_rev() , safetech_encryption_per_item_fee_rev() , safetech_encryption_ingenico_rev() , safetech_encryption_ingenico_rev() , safetech_encryption_monthly_fee_rev() ,
-                           safetech_tokenization_monthly_fee_rev() , safetech_tokenization_monthly_fee_rev() , safetech_tokenization_per_item_fee_rev() , safetech_page_encryption_per_item_fee_rev() , 
-                           safetech_page_encryption_per_item_contra_rev() , safetech_page_encryption_monthly_fee_rev() , safetech_fraud_per_item_fee_rev(), na.rm = T)})
-  
-  observeEvent(vap_rev(), {
-    summ_table[summ_table$X_ == 'VAP Net Revenue', 'in_Dollars'] <<- vap_rev()
-    output$summ_table <- renderTable(expr = {formattable(summ_table)}, striped = T, bordered = T, spacing = "s")
-  })
-  #---------- ECP
-  echeck_realtime_val_rev <- eventReactive(c(input$echeck_val_fee, input$ecp_val_only_txns, input$mop), 
-                                           {ifelse( 'Electronic Check (ECP)' %in% input$mop, (input$echeck_val_fee* input$ecp_val_only_txns), 0)}
-  )
-  echeck_ach_deposit_rev <- eventReactive(c(input$echeck_ach_deposit_fee, input$echeck_ach_deposits, input$mop), 
-                                          {ifelse( 'Electronic Check (ECP)' %in% input$mop, (input$echeck_ach_deposit_fee* input$echeck_ach_deposits), 0)}
-  )
-  echeck_ach_redeposit_rev <- eventReactive(c(input$echeck_ach_deposit_fee, input$ecp_debit_txns, input$ecp_validate_only_txns, input$mop), 
-                                            {ifelse( 'Electronic Check (ECP)' %in% input$mop, (input$echeck_ach_deposit_fee* (input$ecp_debit_txns + input$ecp_validate_only_txns) * 0.0013), 0)}
-  )
-  echeck_paper_draft_deposit_rev <- eventReactive(c(input$echeck_paper_draft_deposits, input$echeck_paper_draft_deposit_fee, input$mop),
-                                                  {ifelse( 'Electronic Check (ECP)' %in% input$mop, (input$echeck_paper_draft_deposits* input$echeck_paper_draft_deposit_fee), 0)}
-  )
-  echeck_paper_draft_redeposit_rev <- eventReactive(c(input$echeck_paper_draft_deposits, input$echeck_paper_draft_deposit_fee, input$mop), 
-                                                    {ifelse( 'Electronic Check (ECP)' %in% input$mop, (input$echeck_paper_draft_deposits* input$echeck_paper_draft_deposit_fee * 0.00008), 0)}
-  )
-  
-  ecp_returns_ach_rev <- eventReactive(c(input$returns_ach_fee, input$ecp_debit_txns, input$paper_draft_percent_deposit_txns, input$ecp_return_ratio, input$mop), 
-                                       {ifelse( 'Electronic Check (ECP)' %in% input$mop, (input$returns_ach_fee* (1 - input$paper_draft_percent_deposit_txns) * input$ecp_return_ratio), 0)}
-  )
-  
-  ecp_returns_paperdraft_rev <- eventReactive(c(input$returns_paper_draft_fee, input$ecp_debit_txns, input$paper_draft_percent_deposit_txns, input$ecp_return_ratio, input$mop), 
-                                              {ifelse( 'Electronic Check (ECP)' %in% input$mop, (input$returns_paper_draft_fee* (input$paper_draft_percent_deposit_txns) * input$ecp_return_ratio), 0)}
-  )
-  
-  repair_rev <- eventReactive(c(input$deposit_matching_repair_fee, input$ecp_debit_txns, input$ecp_val_only_txns, input$mop), 
-                              {ifelse( 'Electronic Check (ECP)' %in% input$mop, (input$deposit_matching_repair_fee* (input$ecp_debit_txns + input$ecp_val_only_txns) * 0.0056), 0)}
-  )
-  ecp_notification_of_revview_rev <- eventReactive(c(input$echeck_notification_of_change_fee, input$ecp_debit_txns, input$ecp_val_only_txns, input$mop), 
-                                                   {ifelse( 'Electronic Check (ECP)' %in% input$mop, (input$echeck_notification_of_change_fee* (input$ecp_debit_txns + input$ecp_val_only_txns) * 0.00008), 0)}
-  )  
-  ecp_rejects_rev <- eventReactive(c(input$echeck_ach_deposit_fee, input$ecp_debit_txns, input$ecp_val_only_txns, input$mop),
-                                   {ifelse( 'Electronic Check (ECP)' %in% input$mop, (input$echeck_ach_deposit_fee* (input$ecp_debit_txns + input$ecp_val_only_txns) * 0.0013), 0)}
-  )
-  ecp_account_status_verification_rev <- eventReactive(c(input$ach_fund_transfer_fee, input$accnt_status_ver_txns, input$mop), 
-                                                       {ifelse( 'Electronic Check (ECP)' %in% input$mop, (input$accnt_status_ver_fee * input$accnt_status_ver_txns), 0)}
-  )
-  ecp_account_owner_authentication_rev <- eventReactive(c(input$accnt_owner_auth_txns, input$accnt_owner_auth_fee, input$mop), 
-                                                        {ifelse( 'Electronic Check (ECP)' %in% input$mop, (input$accnt_owner_auth_txns * input$accnt_owner_auth_fee), 0)}
-  )
-  
-  ecp_rev <- reactive({
-    sum(echeck_realtime_val_rev() , echeck_ach_deposit_rev() , echeck_ach_redeposit_rev() , 
-        echeck_paper_draft_deposit_rev() , echeck_paper_draft_redeposit_rev() , ecp_returns_ach_rev() , 
-        ecp_returns_paperdraft_rev() , repair_rev() , ecp_notification_of_revview_rev() , 
-        ecp_rejects_rev() , ecp_account_status_verification_rev() , ecp_account_owner_authentication_rev(), na.rm = T)
-  })
-  
-  observeEvent(ecp_rev(), {
-    summ_table[summ_table$X_ == 'ECP Net Revenue', 'in_Dollars'] <<- ecp_rev()
-    output$summ_table <- renderTable(expr = {formattable(summ_table)}, striped = T, bordered = T, spacing = "s")
-  })
-  
-  total_rev <- eventReactive(c(other_rev(), credit_rev(), vap_rev(), ecp_rev()), {sum(other_rev(), credit_rev(), vap_rev(), ecp_rev(), na.rm = T)})  
-  
-  observeEvent(total_rev(), {
-    summ_table[summ_table$X_ == 'Total Net Revenue', 'in_Dollars'] <<-   paste("$",format(round(as.numeric(total_rev()), 1), nsmall=1, big.mark=",") )
-    summ_table[summ_table$X_ == 'Total Net Revenue', 'in_Percentage'] <<- paste(format(round(as.numeric(total_rev() / ( input$sales * 0.0001)), 1), nsmall=1, big.mark=","), "BPS")
-    summ_table[summ_table$X_ == 'Total Net Revenue', 'Per_Tran'] <<- paste("$",format(round(as.numeric(total_rev() / input$txns), 1), nsmall=1, big.mark=",") ) 
-    
-    summ_table[summ_table$X_ == 'Credit Net Revenue', 'in_Dollars'] <<- paste("$",format(round(as.numeric(credit_rev()), 1), nsmall=1, big.mark=",") )
-    summ_table[summ_table$X_ == 'Credit Net Revenue', 'in_Percentage'] <<- paste(format(round(as.numeric(credit_rev() / ( input$sales * 0.0001)), 1), nsmall=1, big.mark=","), "BPS")
-    summ_table[summ_table$X_ == 'Credit Net Revenue', 'Per_Tran'] <<- paste("$",format(round(as.numeric(credit_rev() / input$txns), 1), nsmall=1, big.mark=",") ) 
-    
-    summ_table[summ_table$X_ == 'ECP Net Revenue', 'in_Dollars'] <<- paste("$",format(round(as.numeric(ecp_rev()), 1), nsmall=1, big.mark=",") )
-    summ_table[summ_table$X_ == 'ECP Net Revenue', 'in_Percentage'] <<- paste(format(round(as.numeric(ecp_rev() / ( input$sales * 0.0001)), 1), nsmall=1, big.mark=","), "BPS")
-    summ_table[summ_table$X_ == 'ECP Net Revenue', 'Per_Tran'] <<- paste("$",format(round(as.numeric(ecp_rev() / input$txns), 1), nsmall=1, big.mark=",") ) 
-    
-    summ_table[summ_table$X_ == 'VAP Net Revenue', 'in_Dollars'] <<- paste("$",format(round(as.numeric(vap_rev()), 1), nsmall=1, big.mark=",") )
-    summ_table[summ_table$X_ == 'VAP Net Revenue', 'in_Percentage'] <<- paste(format(round(as.numeric(vap_rev() / ( input$sales * 0.0001)), 1), nsmall=1, big.mark=","), "BPS")
-    summ_table[summ_table$X_ == 'VAP Net Revenue', 'Per_Tran'] <<- paste("$",format(round(as.numeric(vap_rev() / input$txns), 1), nsmall=1, big.mark=",") ) 
-    
-    output$summ_table <- renderTable(expr = {formattable(summ_table)}, striped = T, bordered = T, spacing = "s")
-  })
+  # ach_fund_tansfer_rev <- eventReactive(c(input$ach_fund_transfer_fee, input$annual_ach_funds_transfers), 
+  #                                       {ifelse(is.na(input$ach_fund_transfer_fee * input$annual_ach_funds_transfers),0,input$ach_fund_transfer_fee * input$annual_ach_funds_transfers) })
+  # wire_funds_transfer_rev <- eventReactive(c(input$wire_funds_transfer_fee, input$annual_wire_funds_transfers), 
+  #                                          {ifelse(is.na(input$wire_funds_transfer_fee * input$annual_wire_funds_transfers),0,input$wire_funds_transfer_fee * input$annual_wire_funds_transfers)})
+  # rebate_net_sales_rev <- eventReactive(c(input$rebate_percent_on_net_volume, input$sales), 
+  #                                       {ifelse(is.na(input$rebate_percent_on_net_volume* input$sales),0,(input$rebate_percent_on_net_volume* input$sales))})
+  # rebate_setup_rev <- eventReactive(c(input$rebate_setup),
+  #                                   {ifelse(is.na(input$rebate_setup),0,(input$rebate_setup))})
+  # rebate_monthly_rev <- eventReactive(c(input$rebate_monthly), {ifelse(is.na(input$rebate_monthly),0, (input$rebate_monthly * 12))})
+  # rebate_per_capture_rev   <- eventReactive(c(input$rebate_dollar_per_tran, input$txns), {ifelse(is.na(input$rebate_dollar_per_tran* input$txns),0,(input$rebate_dollar_per_tran* input$txns))})
+  # 
+  # 
+  # other_rev <- reactive({sum(ach_fund_tansfer_rev() , wire_funds_transfer_rev() , rebate_net_sales_rev() , rebate_setup_rev() , rebate_monthly_rev() , rebate_per_capture_rev(), na.rm = T)})
+  # 
+  # 
+  # #---------- Credit
+  # auth_fee_rev <- reactive({ifelse( 'Credit' %in% input$mop & !is.na(input$auths * input$auth_fee),(input$auths * input$auth_fee),0)})
+  # txn_fee_rev <- eventReactive(c(input$txn_fee, input$txns, input$mop),
+  #                              {ifelse( 'Credit' %in% input$mop & !is.na(input$txn_fee * input$txns),(input$txn_fee * input$txns),0)}
+  # )
+  # discount_rate_rev <- eventReactive(c(input$sales, input$discount_rate, input$mop), {ifelse( 'Credit' %in% input$mop & !is.na(input$sales * input$discount_rate),(input$sales * input$discount_rate),0)} )
+  # 
+  # chargeback_fee_rev <- eventReactive(c(input$chargebacks, input$cback_fee, input$mop),
+  #                                     {ifelse( 'Credit' %in% input$mop & !is.na(input$chargebacks * input$cback_fee),(input$chargebacks * input$cback_fee),0)}
+  # )
+  # collection_fee_rev <- eventReactive(c(input$chargebacks, input$comp_fee, input$mop), 
+  #                                     {ifelse( 'Credit' %in% input$mop & !is.na(input$chargebacks * input$comp_fee),(input$chargebacks * input$comp_fee),0)}
+  # )
+  # voice_auth_rev <- eventReactive(c(input$voice_authorizations, input$voice_auth_rev_fee, input$mop), 
+  #                                 {ifelse( 'Credit' %in% input$mop & !is.na(input$voice_authorizations * input$voice_auth_rev_fee),(input$voice_authorizations * input$voice_auth_rev_fee),0)}
+  # )
+  # 
+  # paper_reporting_rev <- eventReactive(c(input$paper_reporting_fee, input$mop), 
+  #                                      {ifelse( 'Credit' %in% input$mop & !is.na(input$paper_reporting_fee ),(input$paper_reporting_fee * 12),0)}
+  # )
+  # monthly_maintainence_fee_rev <- eventReactive(c(input$monthly_maintainence_fee, input$mop),
+  #                                               {ifelse( 'Credit' %in% input$mop & !is.na(input$monthly_maintainence_fee ),(input$monthly_maintainence_fee * 12),0)}
+  # )
+  # application_fee_rev <- eventReactive(c(input$application_fee, input$mop), 
+  #                                      {ifelse( 'Credit' %in% input$mop & !is.na(input$application_fee),(input$application_fee),0)}
+  # )
+  # 
+  # credit_rev <- reactive({sum(auth_fee_rev() , txn_fee_rev() , discount_rate_rev() ,       chargeback_fee_rev() , collection_fee_rev() , voice_auth_rev() , paper_reporting_rev() , monthly_maintainence_fee_rev() , application_fee_rev(), na.rm = T)})
+  # 
+  # observeEvent(credit_rev(), {
+  #   summ_table[summ_table$X_ == 'Credit Net Revenue', 'in_Dollars'] <<- credit_rev()
+  #   output$summ_table <- renderTable(expr = {formattable(summ_table)}, striped = T, bordered = T, spacing = "s")
+  # })
+  # 
+  # #---------- VAP
+  # purchasing_card_level3_rev <- eventReactive(c(input$purchasing_card_level3_fee, input$purchasing_card_level3_txns, input$processing_options),
+  #                                             {ifelse('pcl3' %in% input$processing_options, input$purchasing_card_level3_fee * input$purchasing_card_level3_txns, 0)}
+  # )
+  # accnt_updater_match_rev <- eventReactive(c(input$accnt_updater_match_fee, input$accnt_updater_matches, input$processing_options), 
+  #                                          {ifelse('au' %in% input$processing_options, (input$accnt_updater_match_fee * input$accnt_updater_matches), 0)}
+  # )
+  # accnt_updater_montly_rev <- eventReactive(c(input$accnt_updater_montly_fee, input$processing_options), 
+  #                                           {ifelse('au' %in% input$processing_options, (input$accnt_updater_montly_fee * 12), 0)}
+  # )
+  # 
+  # visa_fraud_rev <- eventReactive(c(input$visa_fraud_fee, input$num_visa_records, input$processing_options, input$analytics_products), 
+  #                                 {ifelse('Credit' %in% input$mop & 'Fraud Advice Reporting' %in% input$analytics_products, (input$visa_fraud_fee * input$num_visa_records), 0)}
+  # )
+  # mc_fraud_rev <- eventReactive(c(input$mc_fraud_fee, input$num_mc_records, input$processing_options, input$analytics_products),
+  #                               {ifelse('Credit' %in% input$mop & 'Fraud Advice Reporting' %in% input$analytics_products, (input$mc_fraud_fee * input$num_mc_records), 0)}
+  # )
+  # pinless_bin_management_fee_rev <- eventReactive(c(input$pinless_bin_management_txn_fee, input$pinless_bin_management_txns, input$processing_options),
+  #                                                 {ifelse( 'plbm' %in% input$processing_options, (input$pinless_bin_management_txn_fee * input$pinless_bin_management_txns), 0)}
+  # )
+  # pinless_bin_management_montly_fee_rev <- eventReactive(c(input$pinless_bin_management_montly_fee, input$processing_options),
+  #                                                        {ifelse( 'plbm' %in% input$processing_options, (input$pinless_bin_management_montly_fee * 12), 0)}
+  # )
+  # multicurrency_rev <- eventReactive(c(input$fx_markup, input$non_usd_presentment_percent_vol, input$annual_gross_sales_vol, input$processing_options), 
+  #                                    {ifelse( 'mc' %in% input$processing_options, (input$fx_markup * input$non_usd_presentment_percent_vol * input$annual_gross_sales_vol), 0)}
+  # )
+  # 
+  # # Connectivity
+  # netconnect_txn_rev <- eventReactive(c(input$netconnect_txn_fee, input$netconnect_txns, input$connectivity_products), 
+  #                                     {ifelse( 'NetConnect' %in% input$connectivity_products, (input$netconnect_txn_fee* input$netconnect_txns), 0)}
+  # )
+  # netconnect_batch_monthly_fee_rev <- eventReactive(c(input$netconnect_batch_monthly_fee, input$connectivity_products), 
+  #                                                   {ifelse( 'NetConnect' %in% input$connectivity_products, (input$netconnect_batch_monthly_fee * 12), 0)}
+  # )
+  # 
+  # orbital_gateway_per_item_transport_fee_rev <- eventReactive(c(input$orbital_gateway_per_item_transport_fee, input$orbital_gateway_txns, input$connectivity_products), 
+  #                                                             {ifelse( 'Orbital Gateway' %in% input$connectivity_products, (input$orbital_gateway_per_item_transport_fee* input$orbital_gateway_txns), 0)}
+  # )
+  # orbital_gateway_per_outlet_monthly_fee_rev <- eventReactive(c(input$orbital_gateway_per_outlet_monthly_fee, input$outlets_with_orbital_gateway_monthly_fee, input$connectivity_products), 
+  #                                                             {ifelse( 'Orbital Gateway' %in% input$connectivity_products, (input$orbital_gateway_per_outlet_monthly_fee* input$outlets_with_orbital_gateway_monthly_fee), 0)}
+  # )
+  # hostedpaypage_txn_rev <- eventReactive(c(input$hostedpaypage_txns, input$hostedpaypage_txn_fee, input$connectivity_products), 
+  #                                        {ifelse( 'Hosted Pay Page' %in% input$connectivity_products, (input$hostedpaypage_txns * input$hostedpaypage_txn_fee), 0)}
+  # )
+  # frame_relay_rev <- eventReactive(c(input$num_frame_relay_circuits, input$network_admin_fee, input$connectivity_products), 
+  #                                  {ifelse( 'Frame Relay' %in% input$connectivity_products, (input$num_frame_relay_circuits* input$network_admin_fee), 0)}
+  # )
+  # 
+  # # Security
+  # safetech_encryption_per_item_fee_rev <- eventReactive(c(input$safetech_encryption_per_item_fee, input$safetech_encryption_items, input$security_products), 
+  #                                                       {ifelse( 'Safetech Encryption' %in% input$security_products, (input$safetech_encryption_per_item_fee * input$safetech_encryption_items), 0)}
+  # )
+  # safetech_encryption_ingenico_rev <- eventReactive(c(input$safetech_encryption_items, input$ingenico_percent_encyption_items, input$security_products), 
+  #                                                   {ifelse( 'Safetech Encryption' %in% input$security_products, (-0.005 * input$safetech_encryption_items * (1 - input$ingenico_percent_encyption_items) ), 0)}
+  # )
+  # safetech_encryption_monthly_fee_rev <- eventReactive(c(input$safetech_encryption_monthly_fee, input$security_products),
+  #                                                      {ifelse( 'Safetech Encryption' %in% input$security_products, (input$safetech_encryption_monthly_fee * 12), 0)}
+  # )
+  # 
+  # safetech_tokenization_monthly_fee_rev <- eventReactive(c(input$safetech_tokenization_monthly_fee, input$security_products), 
+  #                                                        {ifelse( 'Safetech Tokenization' %in% input$security_products, (input$safetech_tokenization_monthly_fee * 12), 0)}
+  # )
+  # safetech_tokenization_per_item_fee_rev <- eventReactive(c(input$safetech_tokenization_per_item_fee, input$safetech_tokenization_items, input$security_products), 
+  #                                                         {ifelse( 'Safetech Tokenization' %in% input$security_products, input$safetech_encryption_per_item_fee * input$safetech_tokenization_items, 0)}
+  # )
+  # 
+  # safetech_page_encryption_per_item_fee_rev <- eventReactive(c(input$safetech_page_encryption_per_item_fee, input$safetech_page_encryption_items, input$security_products),
+  #                                                            {ifelse( 'Safetech Page Encryption' %in% input$security_products, (input$safetech_page_encryption_per_item_fee * input$safetech_page_encryption_items), 0)}
+  # )
+  # safetech_page_encryption_per_item_contra_rev <- eventReactive(c(input$safetech_page_encryption_items, input$security_products), 
+  #                                                               {ifelse( 'Safetech Page Encryption' %in% input$security_products, (input$safetech_page_encryption_items * (-0.0013)), 0)}
+  # )
+  # 
+  # safetech_page_encryption_monthly_fee_rev <- eventReactive(c(input$safetech_page_encryption_monthly_fee, input$security_products), 
+  #                                                           {ifelse( 'Safetech Fraud' %in% input$security_products, (input$safetech_page_encryption_monthly_fee * 12), 0)}
+  # )
+  # safetech_fraud_per_item_fee_rev <- eventReactive(c(input$safetech_fraud_per_item_fee, input$safetech_fraud_items, input$security_products), 
+  #                                                  {ifelse( 'Safetech Fraud' %in% input$security_products, (input$safetech_fraud_per_item_fee * input$safetech_fraud_items), 0)}
+  # )
+  # safetech_fraud_per_item_contra_rev  <- eventReactive(c(input$safetech_fraud_items, input$safetech_fraud_per_item_fee, input$processing_options), 
+  #                                                      {ifelse( 'Safetech Fraud' %in% input$security_products, (
+  #                                                        if(input$safetech_fraud_per_item_fee < 0.07){0.5 * input$safetech_fraud_per_item_fee < 0.07}
+  #                                                        else if(input$safetech_fraud_items < 1000000){0.02*(0.3*(input$safetech_fraud_per_item_fee - 0.02))}
+  #                                                        else{-0.015 * 0.3*(input$safetech_fraud_per_item_fee - 0.02)}
+  #                                                      ), 0)}
+  # )
+  # 
+  # vap_rev <- reactive({sum(purchasing_card_level3_rev() , accnt_updater_match_rev() , accnt_updater_montly_rev() , 
+  #                          visa_fraud_rev() , mc_fraud_rev() , pinless_bin_management_fee_rev() , pinless_bin_management_montly_fee_rev() , multicurrency_rev() , netconnect_txn_rev() , 
+  #                          netconnect_batch_monthly_fee_rev() , orbital_gateway_per_item_transport_fee_rev() , orbital_gateway_per_outlet_monthly_fee_rev() , hostedpaypage_txn_rev() ,
+  #                          frame_relay_rev() , safetech_encryption_per_item_fee_rev() , safetech_encryption_ingenico_rev() , safetech_encryption_ingenico_rev() , safetech_encryption_monthly_fee_rev() ,
+  #                          safetech_tokenization_monthly_fee_rev() , safetech_tokenization_monthly_fee_rev() , safetech_tokenization_per_item_fee_rev() , safetech_page_encryption_per_item_fee_rev() , 
+  #                          safetech_page_encryption_per_item_contra_rev() , safetech_page_encryption_monthly_fee_rev() , safetech_fraud_per_item_fee_rev(), na.rm = T)})
+  # 
+  # observeEvent(vap_rev(), {
+  #   summ_table[summ_table$X_ == 'VAP Net Revenue', 'in_Dollars'] <<- vap_rev()
+  #   output$summ_table <- renderTable(expr = {formattable(summ_table)}, striped = T, bordered = T, spacing = "s")
+  # })
+  # #---------- ECP
+  # echeck_realtime_val_rev <- eventReactive(c(input$echeck_val_fee, input$ecp_val_only_txns, input$mop), 
+  #                                          {ifelse( 'Electronic Check (ECP)' %in% input$mop, (input$echeck_val_fee* input$ecp_val_only_txns), 0)}
+  # )
+  # echeck_ach_deposit_rev <- eventReactive(c(input$echeck_ach_deposit_fee, input$echeck_ach_deposits, input$mop), 
+  #                                         {ifelse( 'Electronic Check (ECP)' %in% input$mop, (input$echeck_ach_deposit_fee* input$echeck_ach_deposits), 0)}
+  # )
+  # echeck_ach_redeposit_rev <- eventReactive(c(input$echeck_ach_deposit_fee, input$ecp_debit_txns, input$ecp_validate_only_txns, input$mop), 
+  #                                           {ifelse( 'Electronic Check (ECP)' %in% input$mop, (input$echeck_ach_deposit_fee* (input$ecp_debit_txns + input$ecp_validate_only_txns) * 0.0013), 0)}
+  # )
+  # echeck_paper_draft_deposit_rev <- eventReactive(c(input$echeck_paper_draft_deposits, input$echeck_paper_draft_deposit_fee, input$mop),
+  #                                                 {ifelse( 'Electronic Check (ECP)' %in% input$mop, (input$echeck_paper_draft_deposits* input$echeck_paper_draft_deposit_fee), 0)}
+  # )
+  # echeck_paper_draft_redeposit_rev <- eventReactive(c(input$echeck_paper_draft_deposits, input$echeck_paper_draft_deposit_fee, input$mop), 
+  #                                                   {ifelse( 'Electronic Check (ECP)' %in% input$mop, (input$echeck_paper_draft_deposits* input$echeck_paper_draft_deposit_fee * 0.00008), 0)}
+  # )
+  # 
+  # ecp_returns_ach_rev <- eventReactive(c(input$returns_ach_fee, input$ecp_debit_txns, input$paper_draft_percent_deposit_txns, input$ecp_return_ratio, input$mop), 
+  #                                      {ifelse( 'Electronic Check (ECP)' %in% input$mop, (input$returns_ach_fee* (1 - input$paper_draft_percent_deposit_txns) * input$ecp_return_ratio), 0)}
+  # )
+  # 
+  # ecp_returns_paperdraft_rev <- eventReactive(c(input$returns_paper_draft_fee, input$ecp_debit_txns, input$paper_draft_percent_deposit_txns, input$ecp_return_ratio, input$mop), 
+  #                                             {ifelse( 'Electronic Check (ECP)' %in% input$mop, (input$returns_paper_draft_fee* (input$paper_draft_percent_deposit_txns) * input$ecp_return_ratio), 0)}
+  # )
+  # 
+  # repair_rev <- eventReactive(c(input$deposit_matching_repair_fee, input$ecp_debit_txns, input$ecp_val_only_txns, input$mop), 
+  #                             {ifelse( 'Electronic Check (ECP)' %in% input$mop, (input$deposit_matching_repair_fee* (input$ecp_debit_txns + input$ecp_val_only_txns) * 0.0056), 0)}
+  # )
+  # ecp_notification_of_revview_rev <- eventReactive(c(input$echeck_notification_of_change_fee, input$ecp_debit_txns, input$ecp_val_only_txns, input$mop), 
+  #                                                  {ifelse( 'Electronic Check (ECP)' %in% input$mop, (input$echeck_notification_of_change_fee* (input$ecp_debit_txns + input$ecp_val_only_txns) * 0.00008), 0)}
+  # )  
+  # ecp_rejects_rev <- eventReactive(c(input$echeck_ach_deposit_fee, input$ecp_debit_txns, input$ecp_val_only_txns, input$mop),
+  #                                  {ifelse( 'Electronic Check (ECP)' %in% input$mop, (input$echeck_ach_deposit_fee* (input$ecp_debit_txns + input$ecp_val_only_txns) * 0.0013), 0)}
+  # )
+  # ecp_account_status_verification_rev <- eventReactive(c(input$ach_fund_transfer_fee, input$accnt_status_ver_txns, input$mop), 
+  #                                                      {ifelse( 'Electronic Check (ECP)' %in% input$mop, (input$accnt_status_ver_fee * input$accnt_status_ver_txns), 0)}
+  # )
+  # ecp_account_owner_authentication_rev <- eventReactive(c(input$accnt_owner_auth_txns, input$accnt_owner_auth_fee, input$mop), 
+  #                                                       {ifelse( 'Electronic Check (ECP)' %in% input$mop, (input$accnt_owner_auth_txns * input$accnt_owner_auth_fee), 0)}
+  # )
+  # 
+  # ecp_rev <- reactive({
+  #   sum(echeck_realtime_val_rev() , echeck_ach_deposit_rev() , echeck_ach_redeposit_rev() , 
+  #       echeck_paper_draft_deposit_rev() , echeck_paper_draft_redeposit_rev() , ecp_returns_ach_rev() , 
+  #       ecp_returns_paperdraft_rev() , repair_rev() , ecp_notification_of_revview_rev() , 
+  #       ecp_rejects_rev() , ecp_account_status_verification_rev() , ecp_account_owner_authentication_rev(), na.rm = T)
+  # })
+  # 
+  # observeEvent(ecp_rev(), {
+  #   summ_table[summ_table$X_ == 'ECP Net Revenue', 'in_Dollars'] <<- ecp_rev()
+  #   output$summ_table <- renderTable(expr = {formattable(summ_table)}, striped = T, bordered = T, spacing = "s")
+  # })
+  # 
+  # total_rev <- eventReactive(c(other_rev(), credit_rev(), vap_rev(), ecp_rev()), {sum(other_rev(), credit_rev(), vap_rev(), ecp_rev(), na.rm = T)})  
+  # 
+  # observeEvent(total_rev(), {
+  #   summ_table[summ_table$X_ == 'Total Net Revenue', 'in_Dollars'] <<-   paste("$",format(round(as.numeric(total_rev()), 1), nsmall=1, big.mark=",") )
+  #   summ_table[summ_table$X_ == 'Total Net Revenue', 'in_Percentage'] <<- paste(format(round(as.numeric(total_rev() / ( input$sales * 0.0001)), 1), nsmall=1, big.mark=","), "BPS")
+  #   summ_table[summ_table$X_ == 'Total Net Revenue', 'Per_Tran'] <<- paste("$",format(round(as.numeric(total_rev() / input$txns), 1), nsmall=1, big.mark=",") ) 
+  #   
+  #   summ_table[summ_table$X_ == 'Credit Net Revenue', 'in_Dollars'] <<- paste("$",format(round(as.numeric(credit_rev()), 1), nsmall=1, big.mark=",") )
+  #   summ_table[summ_table$X_ == 'Credit Net Revenue', 'in_Percentage'] <<- paste(format(round(as.numeric(credit_rev() / ( input$sales * 0.0001)), 1), nsmall=1, big.mark=","), "BPS")
+  #   summ_table[summ_table$X_ == 'Credit Net Revenue', 'Per_Tran'] <<- paste("$",format(round(as.numeric(credit_rev() / input$txns), 1), nsmall=1, big.mark=",") ) 
+  #   
+  #   summ_table[summ_table$X_ == 'ECP Net Revenue', 'in_Dollars'] <<- paste("$",format(round(as.numeric(ecp_rev()), 1), nsmall=1, big.mark=",") )
+  #   summ_table[summ_table$X_ == 'ECP Net Revenue', 'in_Percentage'] <<- paste(format(round(as.numeric(ecp_rev() / ( input$sales * 0.0001)), 1), nsmall=1, big.mark=","), "BPS")
+  #   summ_table[summ_table$X_ == 'ECP Net Revenue', 'Per_Tran'] <<- paste("$",format(round(as.numeric(ecp_rev() / input$txns), 1), nsmall=1, big.mark=",") ) 
+  #   
+  #   summ_table[summ_table$X_ == 'VAP Net Revenue', 'in_Dollars'] <<- paste("$",format(round(as.numeric(vap_rev()), 1), nsmall=1, big.mark=",") )
+  #   summ_table[summ_table$X_ == 'VAP Net Revenue', 'in_Percentage'] <<- paste(format(round(as.numeric(vap_rev() / ( input$sales * 0.0001)), 1), nsmall=1, big.mark=","), "BPS")
+  #   summ_table[summ_table$X_ == 'VAP Net Revenue', 'Per_Tran'] <<- paste("$",format(round(as.numeric(vap_rev() / input$txns), 1), nsmall=1, big.mark=",") ) 
+  #   
+  #   output$summ_table <- renderTable(expr = {formattable(summ_table)}, striped = T, bordered = T, spacing = "s")
+  # })
   # shinyAppDir(".")
   
 }
