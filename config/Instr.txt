@@ -1,2 +1,0 @@
-Add the shinyauthr.zip package from github
-https://github.com/PaulC91/shinyauthr

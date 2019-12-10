@@ -18,37 +18,7 @@ if (!require("shinyauthr")) devtools::install_github("paulc91/shinyauthr")
 options(shiny.reactlog = TRUE)
 
 ##################################### Pre-Run #####################################
-setwd("C:/Users/vootl/OneDrive/Documents/Me/Employee Onboarding")
-InProgress <- read.csv(file = "./files/InProgress.csv", stringsAsFactors = F)
-mcc <- read.csv(file = "./files/mcc_codes.csv", stringsAsFactors = F)
-summ_table <- read.csv(file = "./files/summary.csv", stringsAsFactors = F)
-colnames(summ_table) <- c("_", "in_Dollars", "in_Percentage", "Per_Tran")
-# summ_table1 <-  read_excel("summary.xlsx")
-# summ_table1 <- cbind( summ_table1, Type_ =  c("1", "1", "1", "2", "3", "1"))
-# summ_table1$`NET REVENUE %` <- summ_table1$`NET REVENUE %` * 100
-user_base <- read.csv(file = "./files/users.csv", header = T, stringsAsFactors = F)
-user_base$Password_HASH <- sapply( user_base$Password, sodium::password_store) 
-bundled_pricing_options <- read.csv("./files/bundled_pricing_option.csv", stringsAsFactors = F)
-
-
-con <- dbConnect(RSQLite::SQLite(), ":memory:")
-if(dbExistsTable(con, "InProgress")){dbRemoveTable(con, "InProgress")}; dbWriteTable(con, "InProgress", InProgress)
-if(dbExistsTable(con, "mcc")){dbRemoveTable(con, "mcc")}; dbWriteTable(con, "mcc", mcc)
-if(dbExistsTable(con, "summ_table")){dbRemoveTable(con, "summ_table")}; dbWriteTable(con, "summ_table", summ_table)
-# if(dbExistsTable(con, "summ_table1")){dbRemoveTable(con, "summ_table1")}; dbWriteTable(con, "summ_table1", summ_table1)
-if(dbExistsTable(con, "user_base")){dbRemoveTable(con, "user_base")}; dbWriteTable(con, "user_base", user_base)
-
-if(dbExistsTable(con, "bundled_pricing_options")){dbRemoveTable(con, "bundled_pricing_options")}; dbWriteTable(con, "bundled_pricing_options", bundled_pricing_options)
-rm(InProgress, mcc, summ_table, user_base, bundled_pricing_options)
-
-
-# dbListTables(con)
-InProgress <- dbReadTable(con, "InProgress")
-mcc <- dbReadTable(con, "mcc")
-summ_table <- dbReadTable(con, "summ_table")
-# summ_table1 <- dbReadTable(con, "summ_table1")
-user_base <- dbReadTable(con, "user_base")
-bundled_pricing_options <- dbReadTable(con, "bundled_pricing_options")
+setwd("C:/Users/vootl/OneDrive/Documents/GitHub/Open-Bank-Account-Online/")
 ##################################### Shiny #####################################
 
 ui <- dashboardPage(
