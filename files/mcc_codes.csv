@@ -1,0 +1,280 @@
+,mcc-name
+1,742-Veterinary Services
+2,763-Agricultural Co-operatives
+3,"780-Horticultural Services, Landscaping Services"
+4,1520-General Contractors-Residential and Commercial
+5,"1711-Air Conditioning Contractors – Sales and Installation, Heating Contractors – Sales, Service, Installation"
+6,1731-Electrical Contractors
+7,"1740-Insulation – Contractors Masonry, Stonework Contractor, Plastering Contractors, Stonework and Masonry Contractors, Tile Settings Contractors"
+8,1750-Carpentry Contractors
+9,"1761-Roofing - Contractors, Sheet Metal Work - Contractors, Siding - Contractors"
+10,1771-Contractors – Concrete Work
+11,"1799-Contractors – Special Trade, Not Elsewhere Classified"
+12,2741-Miscellaneous Publishing and Printing
+13,"2791-Typesetting, Plate Making, & Related Services"
+14,"2842-Specialty Cleaning, Polishing, and Sanitation Preparations"
+15,4011-Railroads
+16,"4111-Local/Suburban Commuter Passenger Transportation – Railroad, feries and local water transportation"
+17,4112-Passenger Railways
+18,4119-Ambulance Services
+19,4121-Taxicabs and Limousines
+20,"4131-Bus Lines, Including Charters, Tour Buses"
+21,"4214-Delivery Services – Local, Freight Carriers, Moving and Storage Companies, Trucking – Local/Long Distance"
+22,"4215-Courier Services – Air or Ground, Fright Forwarders"
+23,"4225-Storage Warehousing, Public"
+24,"4411-Cruise Lines, Steamship Lines"
+25,4457-Boat Rentals and Leases
+26,"4468-Marinas, Marine Service, and Supplies"
+27,"4511-Airlines, Air Carriers ( not listed elsewhere)"
+28,"4582-Airports, Airport Terminals, Flying Fields"
+29,4722-Travel Agencies and Tour Operations
+30,4784-Toll and Bridge Fees
+31,"4789-Transportation Services, Not elsewhere classified)"
+32,4812-Telecommunications Equipment including telephone sales
+33,"4814-Fax services, Telecommunication service including local and long distance calls, credit card calls, calls through use of magnetic-strip reading, telephones and fax services"
+34,4816-Computer Network Services
+35,4821-Telegraph services
+36,4829-Money Orders – Wire Transfer
+37,4899-Cable and other pay television (previously Cable Services)
+38,5013-Motor vehicle supplies and new parts
+39,5021-Office and Commercial Furniture
+40,"5039-Construction Materials, Not Elsewhere Classified"
+41,"5044-Office, Photographic, Photocopy, and Microfilm Equipment"
+42,"5045-Computers, Computer Peripheral Equipment, Software"
+43,"5046-Commercial Equipment, Not Elsewhere Classified"
+44,"5047-Medical, Dental Ophthalmic, Hospital Equipment and Supplies"
+45,5051-Metal Service Centers and Offices
+46,5065-Electrical Parts and Equipment
+47,5072-Hardware Equipment and Supplies
+48,5074-Plumbing and Heating Equipment and Supplies
+49,"5085-Industrial Supplies, Not Elsewhere Classified"
+50,"5094-Precious Stones and Metals, Watches and Jewelry"
+51,"5099-Durable Goods, Not Elsewhere Classified"
+52,"5111-Stationery, Office Supplies, Printing, and Writing Paper"
+53,"5122-Drugs, Drug Proprietors, and Druggist’s Sundries"
+54,"5131-Piece Goods, Notions, and Other Dry Goods"
+55,5137-Men’s Women’s and Children’s Uniforms and Commercial Clothi
+56,5139-Commercial Footwear
+57,"5169-Chemicals and Allied Products, Not Elsewhere Classified"
+58,5172-Petroleum and Petroleum Products
+59,"5192-Books, Periodicals, and Newspapers"
+60,"5193-Florists’ Supplies, Nursery Stock and Flowers"
+61,"5198-Paints, Varnishes, and Supplies"
+62,"5199-Non-durable Goods, Not Elsewhere Classified"
+63,5200-Home Supply Warehouse Stores
+64,5211-Lumber and Building Materials Stores
+65,"5231-Paint and Wallpaper Stores, Glass Stores, Wallpaper Stores, Hardware Stores"
+66,5251-Hardware Stores
+67,5261-Nurseries – Lawn and Garden Supply Store
+68,5271-Mobile Home Dealers
+69,5300-Wholesale Clubs
+70,5309-Duty Free Store
+71,5310-Discount Stores
+72,5311-Department Stores
+73,5331-Variety Stores
+74,5399-Misc. General Merchandise
+75,"5411-Grocery Stores, Supermarkets"
+76,5422-Freezer and Locker Meat Provisioners
+77,"5441-Candy, Confectionery and Nut Stores"
+78,5451-Dairy Products Stores
+79,5462-Bakeries
+80,5499-Misc. Food Stores – Convenience Stores and Specialty Market
+81,"5511-Car and Truck Dealers (New and Used) Sales, Service, Repair, Parts and leasing"
+82,5521-Automobile and Truck Dealers (Used Only)
+83,5532-Automotive Tire Stores
+84,"5533-Automotive Parts, Accessories Stores"
+85,5541-Service Stations ( with or without ancillary services)
+86,5542-Automated Fuel Dispensers
+87,5551-Boat Dealers
+88,"5561-Recreational and Utility Trailers, Camp Dealers"
+89,5571-Motorcycle Dealers
+90,5592-Motor Home Dealers
+91,5598-Snowmobile Dealers
+92,5599-Misc. Auto Dealers
+93,5611-Men’s and Boy’s Clothing and Accessories Stores
+94,5621-Women’s Ready-to-Wear Stores
+95,5631-Women’s Accessory and Specialty Shops
+96,5641-Children’s and Infant’s Wear Stores
+97,5651-Family Clothing Stores
+98,"5655-Sports Apparel, Riding Apparel Stores"
+99,5661-Shoe Stores
+100,5681-Furriers and Fur Shops
+101,5691-Men’s and Women’s Clothing Stores
+102,"5697-Tailors, Seamstress, Mending, and Alterations"
+103,5698-Wig and Toupee Stores
+104,5699-Miscellaneous Apparel and Accessory Shops
+105,"5712-Furniture, Home Furnishings, and Equipment Stores, Except Appliances"
+106,5713-Floor Covering Stores
+107,"5714-Drapery, Window Covering and Upholstery Stores"
+108,"5718-Fireplace, Fireplace Screens, and Accessories Stores"
+109,5719-Miscellaneous Home Furnishing Specialty Stores
+110,5722-Household Appliance Stores
+111,5732-Electronic Sales
+112,"5733-Music Stores, Musical Instruments, Piano Sheet Music"
+113,5734-Computer Software Stores
+114,5735-Record Shops
+115,5811-Caterers
+116,5812-Eating places and Restaurants
+117,"5813-Drinking Places (Alcoholic Beverages), Bars, Taverns, Cocktail lounges, Nightclubbs and Discotheques"
+118,5814-Fast Food Restaurants
+119,5815-Digital Goods Audiovisual
+120,5816-Digital Goods VideoGames
+121,5817-Digital Goods- Software Applications excluding games
+122,5818-Large Digital Goods
+123,5912-Drug Stores and Pharmacies
+124,"5921-Package Stores – Beer, Wine, and Liquor"
+125,5931-Used Merchandise and Secondhand Stores
+126,5932-Antique Shops
+127,5933-Pawn Shops and Salvage Yards
+128,5935-Wrecking and Salvage Yards
+129,5937-Antique Reproductions
+130,5940-Bicycle Shops – Sales and Service
+131,5941-Sporting Goods Stores
+132,5942-Book Stores
+133,"5943-Stationery Stores, Office and School Supply Stores"
+134,"5944-Watch, Clock, Jewelry, and Silverware Stores"
+135,"5945-Hobby, Toy, and Game Shops"
+136,5946-Camera and Photographic Supply Stores
+137,"5947-Card Shops, Gift, Novelty, and Souvenir Shops"
+138,5948-Leather Foods Stores
+139,"5949-Sewing, Needle, Fabric, and Price Goods Stores"
+140,5950-Glassware/Crystal Stores
+141,5960-Direct Marketing- Insurance Service
+142,5962-Direct Marketing – Travel Related Arrangements Services
+143,5963-Door-to-Door Sales
+144,5964-Direct Marketing – Catalog Merchant
+145,5965-Direct Marketing – Catalog and Catalog and Retail Merchant
+146,5966-Direct Marketing- Outbound Telemarketing Merchant
+147,5967-Direct Marketing – Inbound Teleservices Merchant
+148,5968-Direct Marketing – Continuity/Subscription Merchant
+149,5969-Direct Marketing – Not Elsewhere Classified
+150,5970-Artist’s Supply and Craft Shops
+151,5971-Art Dealers and Galleries
+152,5972-Stamp and Coin Stores – Philatelic and Numismatic Supplies
+153,5973-Religious Goods Stores
+154,"5975-Hearing Aids – Sales, Service, and Supply Stores"
+155,5976-Orthopedic Goods Prosthetic Devices
+156,5977-Cosmetic Stores
+157,"5978-Typewriter Stores – Sales, Rental, Service"
+158,"5983-Fuel – Fuel Oil, Wood, Coal, Liquefied Petroleum"
+159,5992-Florists
+160,5993-Cigar Stores and Stands
+161,5994-News Dealers and Newsstands
+162,"5995-Pet Shops, Pet Foods, and Supplies Stores"
+163,"5996-Swimming Pools – Sales, Service, and Supplies"
+164,5997-Electric Razor Stores – Sales and Service
+165,5998-Tent and Awning Shops
+166,5999-Miscellaneous and Specialty Retail Stores
+167,6012-Financial Institutions – Merchandise and Services
+168,"6051-Non-Financial Institutions – Foreign Currency, Money Orders (not wire transfer) and Travelers Cheques"
+169,6211-Security Brokers/Dealers
+170,"6300-Insurance Sales, Underwriting, and Premiums"
+171,6513-Real Estate Agents and Managers
+172,6540-POI Funding Transactions
+173,"7011-Lodging – Hotels, Motels, Resorts, Central Reservation Services (not elsewhere classified)"
+174,7012-Timeshares
+175,7032-Sporting and Recreational Camps
+176,7033-Trailer Parks and Camp Grounds
+177,"7210-Laundry, Cleaning, and Garment Services"
+178,7211-Laundry – Family and Commercial
+179,7216-Dry Cleaners
+180,7217-Carpet and Upholstery Cleaning
+181,7221-Photographic Studios
+182,7230-Barber and Beauty Shops
+183,"7251-Shop Repair Shops and Shoe Shine Parlors, and Hat Cleaning"
+184,7261-Funeral Service and Crematories
+185,7273-Dating and Escort Services
+186,7276-Tax Preparation Service
+187,"7277-Counseling Service – Debt, Marriage, Personal"
+188,"7278-Buying/Shopping Services, Clubs"
+189,"7296-Clothing Rental – Costumes, Formal Wear, Uniforms"
+190,7297-Massage Parlors
+191,7298-Health and Beauty Shops
+192,7299-Miscellaneous Personal Services ( not elsewhere classifies)
+193,7311-Advertising Services
+194,7321-Consumer Credit Reporting Agencies
+195,"7333-Commercial Photography, Art and Graphics"
+196,"7338-Quick Copy, Reproduction and Blueprinting Services"
+197,7339-Stenographic and Secretarial Support Services
+198,7342-Disinfecting and Exterminating Services
+199,"7349-Cleaning and Maintenance, Janitorial Services"
+200,"7361-Employment Agencies, Temporary Help Services"
+201,"7372-Computer Programming, Integrated Systems Design and Data Processing services"
+202,7375-Information Retrieval Services
+203,"7379-Computer Maintenance and Repair Services, Not Elsewhere"
+204,"7392-Management, Consulting, and Public Relations Services"
+205,7393-Protective and Security Services – Including Armored Cars and guard dogs
+206,"7394-Equipment Rental and Leasing Services, Tool Rental, Furnituiture rental and appliance rental"
+207,"7395-Photofinishing Laboratories, Photo Developing"
+208,"7399-Business Services, Not Elsewhere Classified"
+209,7512-Car Rental Companies ( Not Listed Below)
+210,7513-Truck and Utility Trailer Rentals
+211,7519-Motor Home and Recreational Vehicle Rentals
+212,7523-Automobile Parking Lots and Garages
+213,7531-Automotive Body Repair Shops
+214,7534-Tire Re-treading and Repair Shops
+215,7535-Paint Shops – Automotive
+216,7538-Automotive Service Shops
+217,7542-Car Washes
+218,7549-Towing Services
+219,7622-Radio Repair Shops
+220,7623-Air Conditioning and Refrigeration Repair Shops
+221,7629-Electrical And Small Appliance Repair Shops
+222,"7631-Watch, Clock, and Jewelry Repair"
+223,"7641-Furniture, Furniture Repair, and Furniture Refinishing"
+224,7692-Welding Repair
+225,7699-Repair Shops and Related Services –Miscellaneous
+226,7800-State Run online lotteries
+227,7829-Motion Pictures and Video Tape Production and Distribution
+228,7832-Motion Picture Theaters
+229,7841-Video Tape Rental Stores
+230,"7911-Dance Halls, Studios and Schools"
+231,"7922-Theatrical Producers (Except Motion Pictures), Ticket Agencies"
+232,"7929-Bands, Orchestras, and Miscellaneous Entertainers (Not"
+233,7932-Billiard and Pool Establishments
+234,7933-Bowling Alleys
+235,"7941-Commercial Sports, Athletic Fields, Professional Sport Club and sports promoter"
+236,7991-Tourist Attractions and Exhibits
+237,7992-Golf Courses – Public
+238,7993-Video Amusement Game Supplies
+239,7994-Video Game Arcades/Establishments
+240,"7996-Amusement Parks, Carnivals, Circuses, Fortune Tellers"
+241,"7997-Membership Clubs (Sports, Recreation, Athletic), Country Clubs and Private golf courses"
+242,"7998-Aquariums, Sea-aquariums, Dolphinariums"
+243,7999-Recreation Services (Not Elsewhere Classified)
+244,8011-Doctors and Physicians (Not Elsewhere Classified)
+245,8021-Dentists and Orthodontists
+246,8031-Osteopaths
+247,8041-Chiropractors
+248,8042-Optometrists and Ophthalmologists
+249,"8043-Opticians, Opticians Goods and Eyeglasses"
+250,8049-Podiatrists and Chiropodists
+251,8050-Nursing and Personal Care Facilities
+252,8062-Hospitals
+253,8071-Medical and Dental Laboratories
+254,8099-Medical Services and Health Practitioners (Not Elsewhere
+255,8111-Legal Services and Attorneys
+256,8211-Elementary and Secondary Schools
+257,"8220-Colleges, Junior Colleges, Universities, and Professional Schools"
+258,8241-Correspondence Schools
+259,8244-Business and Secretarial Schools
+260,8249-Vocational Schools and Trade Schools
+261,8299-Schools and Educational Services ( Not Elsewhere Classified
+262,8351-Child Care Services
+263,8398-Charitable and Social Service Organizations
+264,"8641-Civic, Fraternal, and Social Associations"
+265,8651-Political Organizations
+266,8661-Religious Organizations
+267,8675-Automobile Associations
+268,8699-Membership Organizations ( Not Elsewhere Classified)
+269,8734-Testing Laboratories ( non-medical)
+270,8911-Architectural – Engineering and Surveying Services
+271,"8931-Accounting, Auditing, and Bookkeeping Services"
+272,8999-Professional Services ( Not Elsewhere Defined)
+273,"9211-Court Costs, including Alimony and Child Support"
+274,9222-Fines
+275,9223-Bail and Bond Payments
+276,9311-Tax Payments
+277,9399-Government Services ( Not Elsewhere Classified)
+278,9402-Postal Services – Government Only
+279,9950-Intra – Company Purchases ( For Visa Only)
