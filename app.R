@@ -123,20 +123,19 @@ ui <- dashboardPage(
                                                        box(width = 12,
                                                            collapsible = F,  solidHeader = T, title = "Methods of Payment", status = "primary", #collapsed = F, 
                                                            prettyCheckboxGroup(status = 'primary', inputId = "mop", label = NULL, 
-                                                                               choices = c("Credit", "PIN-Based Debit", "PINless Debit", "Electronic Check (ECP)", "ChaseNet/ ChasePay"), inline = T)
+                                                                               choices = c("Credit", "PIN-Based Debit", "PINless Debit", "Electronic Check (ECP)", "UPI"), inline = T)
                                                        ),
                                                        box(width = 12,
                                                            collapsible = F,  solidHeader = T, title = "Additional Products & Capabilities", status = "primary", #collapsed = F, 
                                                            prettyCheckboxGroup(status = 'primary',inputId = "processing_options", label = "Processing Options:", 
-                                                                               choices = c('Account Updater' = 'au', 'ChaseNet/Chase Pay' = 'cncp', 'Purchasing Card Lvl 3' = 'pcl3',
-                                                                                           'Fraud Filter' = 'ff', 'PINless Bin Management' = 'plbm', 'Dynamic Debit Routing' = 'ddr', 
-                                                                                           'ECP Advanced Verification' = 'ecp', 'Multi-Currency' = 'mc'),  selected = character(0), inline = T),
-                                                           prettyCheckboxGroup(status = 'primary', inputId = "connectivity_products", label = "Connectivity Products:", 
-                                                                               choices = c('NetConnect', 'Orbital Gateway',  'Frame Relay'),  inline = T),
+                                                                               choices = c('Multi-Currency' = 'mc', 'Fraud Filter' = 'ff','Smart Insights' = 'au', 'ECP Advanced Verification' = 'ecp',
+                                                                                           'UPI Pro' = 'cncp', 'International Payments' = 'pcl3', 'PINless Management' = 'plbm', 'EMI on Debit' = 'ddr' ),  selected = character(0), inline = T),
+                                                           # prettyCheckboxGroup(status = 'primary', inputId = "connectivity_products", label = "Connectivity Products:", 
+                                                           #                     choices = c('NetConnect', 'Orbital Gateway',  'Frame Relay'),  inline = T),
                                                            prettyCheckboxGroup(status = 'primary', inputId = "security_products", label = "Security Products:", 
-                                                                               choices = c('Safetech Encryption', 'Safetech Tokenization',  'Safetech Fraud'),inline = T),
-                                                           hidden(prettyCheckboxGroup(status = 'primary', inputId = "analytics_products", label = "Analytical Products:", 
-                                                                                      choices = c("Fraud Advice Reporting"), inline = T))
+                                                                               choices = c('Encryption',  'Fraud Detection', 'Cyber Insurance'),inline = T),
+                                                           # hidden(prettyCheckboxGroup(status = 'primary', inputId = "analytics_products", label = "Analytical Products:", 
+                                                           #                            choices = c("Fraud Advice Reporting"), inline = T))
                                                        ),
                                                        fluidRow(column(1, actionButton(inputId = "prev_cstm_main", label = "Prev", icon = icon("arrow-left"))),
                                                                 column(10),
@@ -784,12 +783,12 @@ server <- function(input, output, session) {
       tabs_enabled[tabs_list == "cstm_ecp_info"] <<- T
       tabs_enabled[tabs_list == "cstm_ecp_pri"] <<- T
     }
-    if("ChaseNet/ ChasePay" %in% input$mop ){
+    if("UPI" %in% input$mop ){
       tabs_enabled[tabs_list == "cstm_chnet_chpay"] <<- T
     }
-    if(input$referal_partner_flag){
-      tabs_enabled[tabs_list == "cstm_ref_part"] <<- T
-    }
+    # if(input$referal_partner_flag){
+    #   tabs_enabled[tabs_list == "cstm_ref_part"] <<- T
+    # }
     if(length(input$security_products) > 0) {
       tabs_enabled[tabs_list == "security"] <<-T
     }
