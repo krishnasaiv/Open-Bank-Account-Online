@@ -160,7 +160,9 @@ ui <- dashboardPage(
                                                        tags$div(id = "credit_ap", 
                                                                 box( width = 12,
                                                                      collapsible = T, collapsed = F,  solidHeader = T, title = "Credit Card Additional Products Info", status = "primary", 
-                                                                     selectInput(inputId = "auto_scale_")
+                                                                     fluidRow(column(3, selectInput(inputId = "ap_cre_auto_scale", label = "Auto Scale Limit:", choices = c("x1", "x2", "x3", "x4", "x5"), selected = "x1"))),
+                                                                     fluidRow(column(3, numericInput(inputId = "ap_cre_pinless_credit", label = "Pinless Credit Limit:",value = 5000, min = 2000, step = 1000))),
+                                                                     fluidRow(column(3, selectInput(inputId = "ap_cre_lounge_access", label = "Lounge Access:", choices = c("Standard", "Premium", "Business"), selected = "x1"))),
                                                                      
                                                                      )
                                                        ),
@@ -377,7 +379,6 @@ server <- function(input, output, session) {
     else{shinyjs::hideElement(id = "type_of_acnt")}
   })
   
-  
   observeEvent(input$nxt_main, {
     # print("============ Status Report From Main ============")
     # print(tabs_enabled)
@@ -444,6 +445,7 @@ server <- function(input, output, session) {
       updateTabsetPanel(session, "new", selected = target_page)
     }
     
+    ########### Additional Products - Box Elements
     if('asl' %in% input$processing_options | 'pcp' %in% input$processing_options | 'la' %in% input$processing_options){shinyjs::showElement(id = "credit_ap")}
     else{shinyjs::hideElement(id = "credit_ap")}
     
@@ -453,7 +455,22 @@ server <- function(input, output, session) {
     if('pa' %in% input$processing_options | 'ipwm' %in% input$processing_options | 'mc' %in% input$processing_options){shinyjs::showElement(id = "demat_forex_ap")}
     else{shinyjs::hideElement(id = "demat_forex_ap")}
     
+    
+    ########### Additional Products - Individual Elements
+    ### Credit
+    if('asl' %in% input$processing_options){shinyjs::showElement(id = "ap_cre_auto_scale")}
+    else{shinyjs::hideElement(id = "ap_cre_auto_scale")}
+    
+    if('pcp' %in% input$processing_options){shinyjs::showElement(id = "ap_cre_pinless_credit")}
+    else{shinyjs::hideElement(id = "ap_cre_pinless_credit")}
+    
+    if('la' %in% input$processing_options){shinyjs::showElement(id = "ap_cre_lounge_access")}
+    else{shinyjs::hideElement(id = "ap_cre_lounge_access")}
+    
   })
+  
+  ########### Enable/Disable Additional Products in products page
+  
   observeEvent({input$mop}, {
     if( length(input$mop) == 0){shinyjs::disable(id = 'next_cstm_main')}
     else{shinyjs::enable(id = 'next_cstm_main')}
