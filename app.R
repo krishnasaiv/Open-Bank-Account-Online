@@ -68,7 +68,9 @@ ui <- dashboardPage(
                                                            collapsible = F,  solidHeader = T, title = "Demographics", status = "primary",
                                                            fluidRow(
                                                              column(2,selectInput(inputId = "salutation", label = "Salutation:", choices = c("Mr.", "Ms.", "Mrs."), selected = "Mr.", multiple = F) ),
-                                                             column(3,textInput(inputId = "merchant_name", label = "Name:",placeholder = "Name" ))
+                                                             column(3,textInput(inputId = "merchant_name", label = "Name:",placeholder = "Name" )),
+                                                             column(2, tags$p(tags$strong("Business Account:"))),
+                                                             column(1, switchInput( inputId = "Bsns_acnt", onStatus = "success", offStatus = 'danger', onLabel = "Yes", offLabel = "No", size = 'mini' , value = F))
                                                            ),
                                                            fluidRow(
                                                              column(3, selectInput(inputId = "gender", label = "Gender:", choices = c("M","F","Others","Choose not to say"))),
