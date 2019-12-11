@@ -129,14 +129,17 @@ ui <- dashboardPage(
                                                            collapsible = F,  solidHeader = T, title = "Additional Products & Capabilities", status = "primary", #collapsed = F, 
                                                            prettyCheckboxGroup(status = 'primary',inputId = "processing_options", label = "Processing Options:", 
                                                                                choices = c(
-                                                                                 'Smart Insights' = 'si', 'Fraud Filter' = 'ff', 
-                                                                                 'Auto Incre'
-                                                                                 'Multi-Currency' = 'mc',  'ECP Advanced Verification' = 'ecp',
-                                                                                           'UPI Pro' = 'cncp', 'International Payments' = 'pcl3', 'PINless Management' = 'plbm', 'EMI on Debit' = 'ddr' ),  selected = character(0), inline = T),
+                                                                                 'Smart Insights' = 'si', 'Fraud Filter' = 'ff', 'Fraud Insurance' = 'fi',
+                                                                                 'Auto Scale Limit' = 'asl', 'Pinless Credit Payment' = 'pcp', 
+                                                                                 'Pinless Debit Payment' = 'pdp', 'Photo Debit Card' = 'pdc', 'EMI on Debit' = 'eod',
+                                                                                 'ECP Verification' = 'ecp',
+                                                                                 'Portfolio Assistant' = 'pa', 'Instant Payment to World Markets' = 'ipwm',
+                                                                                 'Multi-Currency Acceptance' = 'mc'  
+                                                                               ),  selected = character(0), inline = T),
                                                            # prettyCheckboxGroup(status = 'primary', inputId = "connectivity_products", label = "Connectivity Products:", 
                                                            #                     choices = c('NetConnect', 'Orbital Gateway',  'Frame Relay'),  inline = T),
-                                                           prettyCheckboxGroup(status = 'primary', inputId = "security_products", label = "Security Products:", 
-                                                                               choices = c('Encryption',  'Fraud Detection', 'Cyber Insurance'),inline = T),
+                                                           # prettyCheckboxGroup(status = 'primary', inputId = "security_products", label = "Security Products:", 
+                                                           #                     choices = c('Encryption',  'Fraud Detection', 'Cyber Insurance'),inline = T),
                                                            # hidden(prettyCheckboxGroup(status = 'primary', inputId = "analytics_products", label = "Analytical Products:", 
                                                            #                            choices = c("Fraud Advice Reporting"), inline = T))
                                                        ),
@@ -531,30 +534,17 @@ server <- function(input, output, session) {
   tabs_enabled <-  c(T,F,F,F,
                      # F,
                      F,F,F,F,F,F,F,F,F)
-  products_list <- c('au','cncp','pcl3','ff','plbm','ddr','ecp','mc')
-  products_enabled <- c(F,F,F,F,F,F,F,F)
-  products_selected <- c(F,F,F,F,F,F,F,F)
+  products_list <- c('si','ff','fi','asl','pcp','pdp','pdc','eod', 'ecp', 'pa', 'ipwm', 'mc')
+  products_enabled <- c(T,T,T,F,F,F,F,F,F,F,F,F)
+  products_selected <- c(F,F,F,F,F,F,F,F,F,F,F,F)
   
   
   #==========================================================================================
   #                                       Run on Startup
   #==========================================================================================
   
-  output$i <- renderDataTable(expr = {InProgress}, options = list(pageLength = 10, lengthMenu = list(c(10, 20, -1), c('10', '20', 'All')), searchHighlight = TRUE))
-  output$c <- renderDataTable(expr = {}, options = list(pageLength = 10, lengthMenu = list(c(10, 20, -1), c('10', '20', 'All')), searchHighlight = TRUE))
-  output$e <- renderDataTable(expr = {}, options = list(pageLength = 10, lengthMenu = list(c(10, 20, -1), c('10', '20', 'All')), searchHighlight = TRUE))
-  output$summ_table <- renderTable(expr = {formattable(summ_table)}, striped = T, bordered = T, spacing = "s")
-  output$summ_table1 <- renderTable(expr = {formattable(summ_table1 %>% select(-Type_))}, striped = T, bordered = T, spacing = "s")
-  output$plt <- renderPlot( 
-    ggplot(data = summ_table1, aes(x = VOLUME.., y = NET.REVENUE.. , color = Type_)) + 
-      geom_point() + 
-      labs(x = "Processing Volume", y = "Net Revenue") + 
-      geom_text(aes(label=TYPE),hjust=0, vjust=0) + 
-      ggtitle("Net Revenue Comparison")
-  )
   cur_page <- reactive(input$new)
   load_pages(tabs_list, tabs_enabled)
-  # output$mcc_desc <- renderText(expr = {mcc[mcc$mcc_code == input$mcc, 2]})
   update_products(products_list, products_enabled, NULL, session)
   
   #==========================================================================================
@@ -622,8 +612,6 @@ server <- function(input, output, session) {
   #==========================================================================================
   observeEvent(input$next_cstm_main, {
     ##### show all relevant elements & hide the rest
-    # print("============ Status Report From Custom Main ============")
-    # print(tabs_enabled)
     tabs_enabled[-c(1,2,3)] <<- tabs_enabled[-c(1,2,3)] & F
     if("Credit" %in% input$mop | "PIN-Based Debit" %in% input$mop | "PINless Debit" %in% input$mop){
       tabs_enabled[tabs_list == "cstm_cre_deb_inf"] <<- T
@@ -643,9 +631,6 @@ server <- function(input, output, session) {
     if("UPI" %in% input$mop ){
       tabs_enabled[tabs_list == "cstm_chnet_chpay"] <<- T
     }
-    # if(input$referal_partner_flag){
-    #   tabs_enabled[tabs_list == "cstm_ref_part"] <<- T
-    # }
     if(length(input$security_products) > 0) {
       tabs_enabled[tabs_list == "security"] <<-T
     }
@@ -666,63 +651,42 @@ server <- function(input, output, session) {
   })
   ### MCC update placed in startup segment
   observeEvent({input$mop}, {
+    
+    
     if("Credit" %in% input$mop){
-      shinyjs::showElement(id = "amex")
-      shinyjs::showElement(id = "discover")
-      shinyjs::showElement(id = "voice_auth_ratio")
-      shinyjs::showElement(id = 'analytics_products')
-      shinyjs::showElement(id = "voice_auth_section")
-      products_enabled[products_list %in% c('au', 'cncp', 'pcl3', 'ff', 'mc')]  <<- T
+      # shinyjs::showElement(id = "amex")
+      # shinyjs::showElement(id = "discover")
+      # shinyjs::showElement(id = "voice_auth_ratio")
+      # shinyjs::showElement(id = 'analytics_products')
+      # shinyjs::showElement(id = "voice_auth_section")
+      products_enabled[products_list %in% c('asl', 'pcp')]  <<- T
     }else{
-      shinyjs::hideElement(id = "amex")
-      shinyjs::hideElement(id = "discover")
-      shinyjs::hideElement(id = "voice_auth_ratio")
-      shinyjs::hideElement(id = 'analytics_products')
-      shinyjs::hideElement(id = "voice_auth_section")
-      products_enabled[products_list %in% c('au', 'cncp', 'pcl3', 'ff', 'mc')]  <<- F
+      # shinyjs::hideElement(id = "amex")
+      # shinyjs::hideElement(id = "discover")
+      # shinyjs::hideElement(id = "voice_auth_ratio")
+      # shinyjs::hideElement(id = 'analytics_products')
+      # shinyjs::hideElement(id = "voice_auth_section")
+      products_enabled[products_list %in% c('asl', 'pcp')]  <<- F
     }
-    if("PIN-Based Debit" %in% input$mop | "PINless Debit" %in% input$mop){products_enabled[products_list  == 'ddr']  <<- T}
-    else{products_enabled[products_list  == 'ddr']  <<- F}
-    if("PINless Debit" %in% input$mop){products_enabled[products_list  == 'plbm']  <<- T;  shinyjs::showElement(id = "pinless")}
-    else{products_enabled[products_list  == 'plbm']  <<- F;  shinyjs::hideElement(id = "pinless")}
-    if("PIN-Based Debit" %in% input$mop){shinyjs::showElement(id = "pin")}
-    else{shinyjs::hideElement(id = "pin")}
-    if("Electronic Check (ECP)" %in% input$mop ){products_enabled[products_list  == 'ecp']  <<- T}
+    if("Debit" %in% input$mop ){products_enabled[products_list  %in% c('pdp', 'pdc', 'eod')]  <<- T}
+    else{products_enabled[products_list  %in% c('pdp', 'pdc', 'eod')]  <<- F}
+    
+    if("Electronic Check (ECP)" %in% input$mop){products_enabled[products_list  == 'ecp']  <<- T}
     else{products_enabled[products_list  == 'ecp']  <<- F}
+    
+    
+    if("Demat" %in% input$mop ){products_enabled[products_list %in% c('pa', 'ipwm')]  <<- T}
+    else{products_enabled[products_list %in% c('pa', 'ipwm')]  <<- F}
+    
+    
+    if("Forex" %in% input$mop ){products_enabled[products_list %in% c('mc')]  <<- T}
+    else{products_enabled[products_list %in% c('mc')]  <<- F}
     # print(products_list)
     # print(products_enabled)
     # print(input$processing_options)
     update_products(l = products_list, e = products_enabled, s = input$processing_options, sess = session)
   }, ignoreNULL = FALSE)
   
-  observe({
-    if('Orbital Gateway' %in% input$connectivity_products){
-      updatePrettyCheckboxGroup(session = session,
-                                inputId = "connectivity_products",
-                                choices = c('NetConnect', 'Orbital Gateway', 'Hosted Pay Page', 'Frame Relay'),
-                                inline = T, selected = input$connectivity_products)
-    }
-    else{
-      updatePrettyCheckboxGroup(session = session,
-                                inputId = "connectivity_products",
-                                choices = c('NetConnect', 'Orbital Gateway', 'Frame Relay'),
-                                inline = T, selected = input$connectivity_products)
-    }
-  })
-  observe({
-    if('Safetech Tokenization' %in% input$security_products){
-      updatePrettyCheckboxGroup(session = session,
-                                inputId = "security_products",
-                                choices =  c('Safetech Encryption', 'Safetech Tokenization','Safetech Page Encryption', 'Safetech Fraud'),
-                                inline = T, selected = input$security_products)
-    }
-    else{
-      updatePrettyCheckboxGroup(session = session,
-                                inputId = "security_products",
-                                choices =  c('Safetech Encryption', 'Safetech Tokenization',  'Safetech Fraud'),
-                                inline = T, selected = input$security_products)
-    }
-  })
   #==========================================================================================
   #                                       Reactives - Credit & Debit Processing Information
   #==========================================================================================
@@ -843,6 +807,6 @@ server <- function(input, output, session) {
     
   }, ignoreNULL = F)
   
-
+  
 }
 shinyApp(ui = ui, server = server)
