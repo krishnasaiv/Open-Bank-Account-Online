@@ -119,18 +119,12 @@ ui <- dashboardPage(
                                                            prettyCheckboxGroup(status = 'primary',inputId = "processing_options", label = "Processing Options:", 
                                                                                choices = c(
                                                                                  'Smart Insights' = 'si', 'Fraud Filter' = 'ff', 'Fraud Insurance' = 'fi',
-                                                                                 'Auto Scale Limit' = 'asl', 'Pinless Credit Payment' = 'pcp', 
+                                                                                 'Auto Scale Limit' = 'asl', 'Pinless Credit Payment' = 'pcp', 'Lounge Access' = 'la', 
                                                                                  'Pinless Debit Payment' = 'pdp', 'Photo Debit Card' = 'pdc', 'EMI on Debit' = 'eod',
                                                                                  'ECP Verification' = 'ecp',
                                                                                  'Portfolio Assistant' = 'pa', 'Instant Payment to World Markets' = 'ipwm',
                                                                                  'Multi-Currency Acceptance' = 'mc'  
                                                                                ),  selected = character(0), inline = T),
-                                                           # prettyCheckboxGroup(status = 'primary', inputId = "connectivity_products", label = "Connectivity Products:", 
-                                                           #                     choices = c('NetConnect', 'Orbital Gateway',  'Frame Relay'),  inline = T),
-                                                           # prettyCheckboxGroup(status = 'primary', inputId = "security_products", label = "Security Products:", 
-                                                           #                     choices = c('Encryption',  'Fraud Detection', 'Cyber Insurance'),inline = T),
-                                                           # hidden(prettyCheckboxGroup(status = 'primary', inputId = "analytics_products", label = "Analytical Products:", 
-                                                           #                            choices = c("Fraud Advice Reporting"), inline = T))
                                                        ),
                                                        fluidRow(column(1, actionButton(inputId = "prev_cstm_main", label = "Prev", icon = icon("arrow-left"))),
                                                                 column(10),
@@ -162,6 +156,16 @@ ui <- dashboardPage(
                                                              )
                                                            )
                                                        ),
+                                                       
+                                                       tags$div(id = "credit_ap", 
+                                                                box( width = 12,
+                                                                     collapsible = T, collapsed = F,  solidHeader = T, title = "Credit Card Additional Products Info", status = "primary", 
+                                                                     selectInput(inputId = "auto_scale_")
+                                                                     
+                                                                     )
+                                                       ),
+                                                       
+                                                       
                                                        fluidRow(column(1, actionButton(inputId = "prev_credit", label = "Prev", icon = icon("arrow-left"))),
                                                                 column(10),
                                                                 column(1, actionButton(inputId = "next_credit", label = "Next", icon = icon("arrow-right"))))
@@ -169,36 +173,11 @@ ui <- dashboardPage(
                                               tabPanel(title = "Debit", value = "debit", 
                                                        box( width = 12,
                                                             collapsible = T, collapsed = F,  solidHeader = T, title = "Credit & Debit Processing Pricing", status = "primary",
-                                                            fluidRow( column(12, tags$a("Authorization & Deposit Pricing"))),
-                                                            fluidRow(
-                                                              column(3, disabled(numericInput(inputId = "auths", label = "Authorizations", value = 1000, min = 0, max = 1000000, step = 1000)),
-                                                                     disabled(numericInput(inputId = "txns", label = "Transactions (S+R)", value = 1000, min = 0, max = 1000000, step = 1000)), 
-                                                                     disabled(numericInput(inputId = "sales", label = "Net Sales $ (S-R)", value = 1000, min = 0, max = 1000000, step = 1000))), 
-                                                              column(3, numericInput(inputId = "auth_fee", label = "Authorization Fee", value = 0.0425, min = 0, max = 1000000, step = 1000), 
-                                                                     numericInput(inputId = "txn_fee", label = "Transaction Fee", value = 0.0550, min = 0, max = 1000000, step = 1000),
-                                                                     numericInput(inputId = "discount_rate", label = "Discount Rate", value = 0, min = 0, max = 1000000, step = 1000))
-                                                            ),
-                                                            fluidRow( column(12, tags$a("Chargeback Pricing"))),
-                                                            fluidRow(
-                                                              column(3, disabled(numericInput(inputId = "chargebacks", label = "Chargebacks", value = 1000, min = 0, max = 1000000, step = 1000))), 
-                                                              column(3, numericInput(inputId = "cback_fee", label = "Chargeback/Representment Fee", value = 2.5, min = 0, max = 1000000, step = 1000)), 
-                                                              column(3, numericInput(inputId = "comp_fee", label = "Collection/Pre-Arb/Compliance Fee", value = 10, min = 0, max = 1000000, step = 1000)))
-                                                            ,
-                                                            fluidRow(id = "voice_auth_section", column(12, tags$a("Voice Authorization Pricing")),
-                                                                     column(3, disabled(numericInput(inputId = "voice_authorizations", label = "Voice Authorizations", value = 1000, min = 0, max = 1000000, step = 1000))), 
-                                                                     column(3, numericInput(inputId = "voice_auth_rev_fee", label = "Voice Authorization & Reversal Fee", value = 0.65, min = 0, max = 1000000, step = 1000), 
-                                                                            numericInput(inputId = "voice_op_assist_fee", label = "Voice Operator Assist Fee", value = 1.75, min = 0, max = 1000000, step = 1000)), 
-                                                                     column(3, numericInput(inputId = "voice_avs_fee", label = "Voice AVS Request Fee", value = 0.65, min = 0, max = 1000000, step = 1000), 
-                                                                            numericInput(inputId = "aru_auth_fee", label = "ARU Authorization Fee", value = 0.5, min = 0, max = 1000000, step = 1000)),
-                                                                     column(3, numericInput(inputId = "voice_avs_auth_fee", label = "Voice AVS Authorization Fee", value = 1.75, min = 0, max = 1000000, step = 1000))
-                                                            ),
-                                                            fluidRow( column(12, tags$a("Other Pricing Options"))),
-                                                            fluidRow(
-                                                              column(3, disabled(numericInput(inputId = "paper_reporting_fee", label = "Paper Reporting Fee", value = 50, min = 0, max = 1000000, step = 1000))), 
-                                                              column(3, numericInput(inputId = "application_fee", label = "Application Fee", value = 0, min = 0, max = 1000000, step = 1000)), 
-                                                              column(3, numericInput(inputId = "monthly_maintainence_fee", label = "Monthly Maintenance Fee", value = 0, min = 0, max = 1000000, step = 1000)),
-                                                              column(3, numericInput(inputId = "sign_on_bonus", label = "Sign-On Bonus", value = 0, min = 0, max = 1000000, step = 1000))
-                                                            )
+                                                       ),
+                                                       
+                                                       tags$div(id = "debit_ap", 
+                                                                box( width = 12,
+                                                                     collapsible = T, collapsed = F,  solidHeader = T, title = "Debit Card Additional Products Info", status = "primary")
                                                        ),
                                                        fluidRow(column(1, actionButton(inputId = "next_debit", label = "Prev", icon = icon("arrow-left"))),
                                                                 column(10),
@@ -217,6 +196,8 @@ ui <- dashboardPage(
                                                                      collapsible = T, collapsed = F,  solidHeader = T, title = "UPI", status = "primary",
                                                                 )
                                                        ),
+                                                       
+                                                       
                                                        fluidRow(column(1, actionButton(inputId = "prev_ecp_upi", label = "Prev", icon = icon("arrow-left"))),
                                                                 column(10),
                                                                 column(1, actionButton(inputId = "next_ecp_upi", label = "Next", icon = icon("arrow-right"))))
@@ -234,6 +215,11 @@ ui <- dashboardPage(
                                                                 box( width = 12,
                                                                      collapsible = T, collapsed = F,  solidHeader = T, title = "Foreign Exchange Information", status = "primary",
                                                                 )
+                                                       ),
+                                                       
+                                                       tags$div(id = "demat_forex_ap", 
+                                                                box( width = 12,
+                                                                     collapsible = T, collapsed = F,  solidHeader = T, title = "Demat & Forex Additional Products Info", status = "primary")
                                                        ),
                                                        fluidRow(column(1, actionButton(inputId = "prev_demat_forex", label = "Prev", icon = icon("arrow-left"))),
                                                                 column(10),
@@ -341,9 +327,9 @@ server <- function(input, output, session) {
   }
   tabs_list <- c("main", "standard_main","cstm_main", "credit" , "debit", "ecp_upi" , "demat_forex", "summary")
   tabs_enabled <-  c(T,F,F,F, F,F,F,F)
-  products_list <- c('si','ff','fi','asl','pcp','pdp','pdc','eod', 'ecp', 'pa', 'ipwm', 'mc')
-  products_enabled <- c(T,T,T,F,F,F,F,F,F,F,F,F)
-  products_selected <- c(F,F,F,F,F,F,F,F,F,F,F,F)
+  products_list <- c('si','ff','fi','asl','pcp', 'la', 'pdp','pdc','eod', 'ecp', 'pa', 'ipwm', 'mc')
+  products_enabled <- c(T,T,T,F,F,F,F,F,F,F,F,F,F)
+  products_selected <- c(F,F,F,F,F,F,F,F,F,F,F,F,F)
   
   #==========================================================================================
   #                                       Run on Startup
@@ -416,9 +402,6 @@ server <- function(input, output, session) {
   #                                       Reactives - Custom Main
   #==========================================================================================
   
-  
-  
-  
   observeEvent(input$next_cstm_main, {
     ##### show all relevant elements & hide the rest
     tabs_enabled[-c(1,2,3)] <<- tabs_enabled[-c(1,2,3)] & F
@@ -460,15 +443,25 @@ server <- function(input, output, session) {
       # print(paste("Target Page Name:",target_page))
       updateTabsetPanel(session, "new", selected = target_page)
     }
+    
+    if('asl' %in% input$processing_options | 'pcp' %in% input$processing_options | 'la' %in% input$processing_options){shinyjs::showElement(id = "credit_ap")}
+    else{shinyjs::hideElement(id = "credit_ap")}
+    
+    if('pdp' %in% input$processing_options | 'pdc' %in% input$processing_options | 'eod' %in% input$processing_options){shinyjs::showElement(id = "debitt_ap")}
+    else{shinyjs::hideElement(id = "debitt_ap")}
+    
+    if('pa' %in% input$processing_options | 'ipwm' %in% input$processing_options | 'mc' %in% input$processing_options){shinyjs::showElement(id = "demat_forex_ap")}
+    else{shinyjs::hideElement(id = "demat_forex_ap")}
+    
   })
   observeEvent({input$mop}, {
     if( length(input$mop) == 0){shinyjs::disable(id = 'next_cstm_main')}
     else{shinyjs::enable(id = 'next_cstm_main')}
     
     if("Credit" %in% input$mop){
-      products_enabled[products_list %in% c('asl', 'pcp')]  <<- T
+      products_enabled[products_list %in% c('asl', 'pcp', 'la')]  <<- T
     }else{
-      products_enabled[products_list %in% c('asl', 'pcp')]  <<- F
+      products_enabled[products_list %in% c('asl', 'pcp', 'la')]  <<- F
     }
     if("Debit" %in% input$mop ){products_enabled[products_list  %in% c('pdp', 'pdc', 'eod')]  <<- T}
     else{products_enabled[products_list  %in% c('pdp', 'pdc', 'eod')]  <<- F}
@@ -476,22 +469,20 @@ server <- function(input, output, session) {
     if("Electronic Check (ECP)" %in% input$mop){products_enabled[products_list  == 'ecp']  <<- T}
     else{products_enabled[products_list  == 'ecp']  <<- F}
     
-    
     if("Demat" %in% input$mop ){products_enabled[products_list %in% c('pa', 'ipwm')]  <<- T}
     else{products_enabled[products_list %in% c('pa', 'ipwm')]  <<- F}
     
-    
     if("Forex" %in% input$mop ){products_enabled[products_list %in% c('mc')]  <<- T}
     else{products_enabled[products_list %in% c('mc')]  <<- F}
-    update_products(l = products_list, e = products_enabled, s = input$processing_options, sess = session)
     
+    update_products(l = products_list, e = products_enabled, s = input$processing_options, sess = session)
     
   }, ignoreNULL = FALSE)
   
   observeEvent(input$has_accnt, {
     if(input$has_accnt){shinyjs::showElement(id = 'accnt_num', anim = T,  animType = 'slide')}
     else{shinyjs::hideElement(id = 'accnt_num', anim = T,  animType = 'slide')}
-     
+    
   })
   
 }
