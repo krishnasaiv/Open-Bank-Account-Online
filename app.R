@@ -137,13 +137,30 @@ ui <- dashboardPage(
                                                                 column(1, actionButton(inputId = "next_cstm_main", label = "Next", icon = icon("arrow-right"))))
                                               ),
                                               tabPanel(title = "Credit", value = "credit",
-                                                       
                                                        box(id = "credit_debit", width = 12,
                                                            collapsible = T, collapsed = F,  solidHeader = T, title = "Credit Card Information", status = "primary",
-                                                           radioGroupButtons(inputId = "card_type", label = "Choose a card:", 
-                                                                             choices = c("Standard", "Rewards","League Platinum", "Royal signature", "Corporate Platinum", "Corporate Signature", "Elite Club", "Elite Planitum", "Elite Signature"),
-                                                                             selected = "Standard", individual = T, status = "primary", checkIcon = list(yes = icon("ok", lib = "glyphicon")))
+                                                           fluidRow(
+                                                             column(2, tags$p(tags$strong("Already have an acoount with us ?"))),
+                                                             column(1, switchInput( inputId = "has_accnt", onStatus = "success", offStatus = 'danger', onLabel = "Yes", offLabel = "No", size = 'mini' , value = F)),
+                                                             column(3, textInput(inputId = "accnt_num", label = "Account Number:", placeholder = "XXXX XXXX XXXX"))
+                                                             
+                                                           ),
+                                                           fluidRow(
+                                                             column(3, numericInput(inputId = "salary", label = "Annual Income:", value = 50000,min = 25000, step = 1000))
+                                                           ),
+                                                           fluidRow(
+                                                             column(6, checkboxGroupInput(inputId = "credit_category", label = "Category", inline = T, choices = c("Premium cards", "Featured Cards", "Co Branded Cards", "Other Cards"))),
+                                                             column(6, checkboxGroupInput(inputId = "reward_type", label = "Rewards Type", inline = T, choices = c("Travel", "Movie", "Fuel", "Shopping")))
+                                                           ),
                                                            
+                                                           fluidRow(
+                                                             column(12, 
+                                                                    radioGroupButtons(inputId = "card_type", label = "Choose a card:", 
+                                                                                      choices = c("Standard", "Rewards","League Platinum", "Royal signature", "Corporate Platinum", "Corporate Signature", "Elite Club", "Elite Planitum", "Elite Signature"),
+                                                                                      selected = "Standard", individual = T, status = "primary", checkIcon = list(yes = icon("ok", lib = "glyphicon"))
+                                                                    )
+                                                             )
+                                                           )
                                                        ),
                                                        fluidRow(column(1, actionButton(inputId = "prev_credit", label = "Prev", icon = icon("arrow-left"))),
                                                                 column(10),
@@ -470,6 +487,12 @@ server <- function(input, output, session) {
     
     
   }, ignoreNULL = FALSE)
+  
+  observeEvent(input$has_accnt, {
+    if(input$has_accnt){shinyjs::showElement(id = 'accnt_num', anim = T,  animType = 'slide')}
+    else{shinyjs::hideElement(id = 'accnt_num', anim = T,  animType = 'slide')}
+     
+  })
   
 }
 shinyApp(ui = ui, server = server)
