@@ -149,8 +149,7 @@ ui <- dashboardPage(
                                                                 column(10),
                                                                 column(1, actionButton(inputId = "next_cstm_main", label = "Next", icon = icon("arrow-right"))))
                                               ),
-                                              # navbarMenu(title = "Credit & Debit", value = "cre_and_deb", 
-                                              tabPanel(title = "Processing Information", value = "cstm_cre_deb_inf",
+                                              tabPanel(title = "Credit", value = "credit",
                                                        
                                                        box(id = "credit_debit", width = 12,
                                                            collapsible = T, collapsed = F,  solidHeader = T, title = "Credit & Debit Processing Information", status = "primary",
@@ -180,11 +179,11 @@ ui <- dashboardPage(
                                                                     column(3,numericInput(inputId = "chargeback_ratio", label = "Chargeback Ratio (%)", value = 0.05, min = 0, max = 100, step = 1)),
                                                                     column(3,numericInput(inputId = "voice_auth_ratio", label = "Voice Authorization Ratio (%)", value = 0.0005, min = 0, max = 100, step = 1)))
                                                        ),
-                                                       fluidRow(column(1, actionButton(inputId = "prev_cstm_cre_deb_inf", label = "Prev", icon = icon("arrow-left"))),
+                                                       fluidRow(column(1, actionButton(inputId = "prev_credit", label = "Prev", icon = icon("arrow-left"))),
                                                                 column(10),
-                                                                column(1, actionButton(inputId = "next_cstm_cre_deb_inf", label = "Next", icon = icon("arrow-right"))))
+                                                                column(1, actionButton(inputId = "next_credit", label = "Next", icon = icon("arrow-right"))))
                                               ),
-                                              tabPanel(title = "Processing Pricing", value = "cstm_cre_deb_pri", 
+                                              tabPanel(title = "Debit", value = "debit", 
                                                        box( width = 12,
                                                             collapsible = T, collapsed = F,  solidHeader = T, title = "Credit & Debit Processing Pricing", status = "primary",
                                                             fluidRow( column(12, tags$a("Authorization & Deposit Pricing"))),
@@ -218,11 +217,11 @@ ui <- dashboardPage(
                                                               column(3, numericInput(inputId = "sign_on_bonus", label = "Sign-On Bonus", value = 0, min = 0, max = 1000000, step = 1000))
                                                             )
                                                        ),
-                                                       fluidRow(column(1, actionButton(inputId = "prev_cstm_cre_deb_pri", label = "Prev", icon = icon("arrow-left"))),
+                                                       fluidRow(column(1, actionButton(inputId = "next_debit", label = "Prev", icon = icon("arrow-left"))),
                                                                 column(10),
                                                                 column(1, actionButton(inputId = "next_cstm_cre_deb_pri", label = "Next", icon = icon("arrow-right"))))
                                               ), 
-                                              tabPanel(title = "Optional credit Products", value = "cstm_cre_opt",
+                                              tabPanel(title = "ECP & UPI", value = "ecp_upi",
                                                        
                                                        tags$div(id = 'optional_purchasing_card_level3', box(width = 12, collapsible = T, collapsed = F,  solidHeader = T, title = "Optional Credit Product Pricing: Purchasing Card Level 3", status = "primary",
                                                                                                             fluidRow(column(3,numericInput(inputId = "purchasing_card_level3_txns", label = "Purchasing Card Level 3 Txns:", value = 100)),
@@ -264,13 +263,13 @@ ui <- dashboardPage(
                                                                                                                    numericInput(inputId = "fx_markup", label = "FX Markup", value = 0))
                                                                                                    )
                                                        )),
-                                                       fluidRow(column(1, actionButton(inputId = "prev_cstm_cre_opt", label = "Prev", icon = icon("arrow-left"))),
+                                                       fluidRow(column(1, actionButton(inputId = "prev_ecp_upi", label = "Prev", icon = icon("arrow-left"))),
                                                                 column(10),
-                                                                column(1, actionButton(inputId = "next_cstm_cre_opt", label = "Next", icon = icon("arrow-right"))))
+                                                                column(1, actionButton(inputId = "next_ecp_upi", label = "Next", icon = icon("arrow-right"))))
                                               )
                                               # )
                                               ,
-                                              tabPanel(title = "ECP Information", value = "cstm_ecp_info",
+                                              tabPanel(title = "Demat & Forex", value = "demat_forex",
                                                        
                                                        box( width = 12,
                                                             collapsible = T, collapsed = F,  solidHeader = T, title = "Electronic Check Processing (ECP) Information", status = "primary",
@@ -289,156 +288,22 @@ ui <- dashboardPage(
                                                                      column(3, numericInput(inputId = "ecp_return_ratio", label = "ECP Return Ratio", value = 0)
                                                                      ))
                                                        ),
-                                                       fluidRow(column(1, actionButton(inputId = "prev_cstm_ecp_info", label = "Prev", icon = icon("arrow-left"))),
+                                                       fluidRow(column(1, actionButton(inputId = "prev_demat_forex", label = "Prev", icon = icon("arrow-left"))),
                                                                 column(10),
-                                                                column(1, actionButton(inputId = "next_cstm_ecp_info", label = "Next", icon = icon("arrow-right"))))
-                                              ),
-                                              tabPanel(title = "ECP Pricing", value = "cstm_ecp_pri",
-                                                       
-                                                       box( width = 12,
-                                                            collapsible = T, collapsed = F,  solidHeader = T, title = "Electronic Check Processing (ECP) Pricing", status = "primary", 
-                                                            fluidRow(column(3, tags$a("ECP Validate(Auth Only Pricing"))),
-                                                            fluidRow(column(3, numericInput(inputId = "ecp_val_only_txns", label = "ECP Validate Only Transactions", value = 0)), 
-                                                                     column(3, numericInput(inputId = "echeck_val_fee", label = "eCheck Validation Fee", value = 0))),
-                                                            fluidRow(column(3, tags$a("ECP Deposit Pricing"))),
-                                                            fluidRow(column(3, numericInput(inputId = "echeck_ach_deposits", label = "eCheck ACH Deposits", value = 0)), 
-                                                                     column(3, numericInput(inputId = "echeck_ach_deposit_fee", label = "eCheck ACH Deposit Fee", value = 0)),
-                                                                     column(3, numericInput(inputId = "returns_ach_fee", label = "Return ACH Fee", value = 0))
-                                                            ),
-                                                            
-                                                            fluidRow(column(3, numericInput(inputId = "echeck_paper_draft_deposits", label = "eCheck Paper Draft Deposits", value = 0)), 
-                                                                     column(3, numericInput(inputId = "echeck_paper_draft_deposit_fee", label = "eCheck Paper Draft Deposit Fee", value = 0),
-                                                                            numericInput(inputId = "deposit_matching_repair_fee", label = "Deposit Matching/Repair Fee", value = 0)
-                                                                     ),
-                                                                     column(3, numericInput(inputId = "returns_paper_draft_fee", label = "Returns Paper Draft Fee", value = 0),
-                                                                            numericInput(inputId = "echeck_notification_of_change_fee", label = "eCheck Notification of Change Fee", value = 0)
-                                                                     )
-                                                            )
-                                                            
-                                                       ),
-                                                       box( width = 12,
-                                                            collapsible = T, collapsed = F,  solidHeader = T, title = "Optional ECP Product Pricing: Advanced Verification", status = "primary",
-                                                            fluidRow(column(3, numericInput(inputId = "accnt_status_ver_txns", label = "Account Status Verification Txns", value = 0)), 
-                                                                     column(3, numericInput(inputId = "accnt_owner_auth_txns", label = "Account Owner Authentication Txns", value = 0))),
-                                                            fluidRow(column(3, numericInput(inputId = "accnt_status_ver_fee", label = "Account Status Verification Fee", value = 0)), 
-                                                                     column(3, numericInput(inputId = "accnt_owner_auth_fee", label = "Account Owner Authentication Fee", value = 0)))), 
-                                                       
-                                                       
-                                                       fluidRow(column(1, actionButton(inputId = "prev_cstm_ecp_pri", label = "Prev", icon = icon("arrow-left"))),
-                                                                column(10),
-                                                                column(1, actionButton(inputId = "next_cstm_ecp_pri", label = "Next", icon = icon("arrow-right"))))
-                                              ),
-                                              tabPanel(title = "Fund Transfer & Connectivity", value = "transfer_connectivity",
-                                                       box( width = 12,
-                                                            collapsible = T, collapsed = F,  solidHeader = T, title = "Funds Transfer Pricing", status = "primary",
-                                                            fluidRow(column(3, numericInput(inputId = "annual_ach_funds_transfers", label = "Annual ACH Funds Transfers", value = 0), 
-                                                                            numericInput(inputId = "annual_wire_funds_transfers", label = "Annual Wire Funds Transfers", value = 0)),
-                                                                     column(3, numericInput(inputId = "ach_fund_transfer_fee", label = "ACH Funds Transfer Fee", value = 2.5), 
-                                                                            numericInput(inputId = "wire_funds_transfer_fee", label = "Wire Funds Transfer Fee", value = 10)))
-                                                       ),
-                                                       tags$div(id = "connectivity_netconnect", box( width = 12,
-                                                                                                     collapsible = T, collapsed = F,  solidHeader = T, title = "Connectivity Product Pricing: NetConnect", status = "primary",
-                                                                                                     fluidRow(column(3, numericInput(inputId = "netconnect_txns", label = "NetConnect Transactions", value = 0)),
-                                                                                                              column(3, numericInput(inputId = "netconnect_txn_fee", label = "NetConnect Transaction Fee", value = 0)), 
-                                                                                                              column(3, numericInput(inputId = "netconnect_batch_monthly_fee", label = "NetConnect Batch Monthly Fee", value = 0))))),
-                                                       tags$div(id = "connectivity_orbitalgateway", box( width = 12,
-                                                                                                         collapsible = T, collapsed = F,  solidHeader = T, title = "Connectivity Product Pricing: Orbital Gateway", status = "primary",
-                                                                                                         fluidRow(column(3, numericInput(inputId = "orbital_gateway_txns", label = "Orbital Gateway Transactions", value = 0), 
-                                                                                                                         numericInput(inputId = "outlets_with_orbital_gateway_monthly_fee", label = "Outlets w/ Gateway Monthly Fee", value = 0)),
-                                                                                                                  column(3, numericInput(inputId = "orbital_gateway_per_item_transport_fee", label = "Gateway Per Item Transport Fee", value = 0), 
-                                                                                                                         numericInput(inputId = "orbital_gateway_per_outlet_monthly_fee", label = "Gateway Monthly Fee (per Outlet)", value = 0))))),
-                                                       tags$div(id = "connectivity_hostedpay", box( width = 12,
-                                                                                                    collapsible = T, collapsed = F,  solidHeader = T, title = "Connectivity Product Pricing: Hosted Pay Page", status = "primary",
-                                                                                                    fluidRow(column(3, numericInput(inputId = "hostedpaypage_txns", label = "Hosted Pay Page Transactions", value = 0)),
-                                                                                                             column(3, numericInput(inputId = "hostedpaypage_txn_fee", label = "Hosted Pay Page Transaction Fee", value = 0))))),
-                                                       tags$div(id = "connectivity_framerelay", box( width = 12,
-                                                                                                     collapsible = T, collapsed = F,  solidHeader = T, title = "Connectivity Product Pricing: Frame Relay", status = "primary",
-                                                                                                     fluidRow(column(3, numericInput(inputId = "num_frame_relay_circuits", label = "Number of Frame Relay Circuits", value = 0)),
-                                                                                                              column(3, numericInput(inputId = "network_admin_fee", label = "Network Administration Fee", value = 0))))),
-                                                       fluidRow(column(1, actionButton(inputId = "prev_transfer_connectivity", label = "Prev", icon = icon("arrow-left"))),
-                                                                column(10),
-                                                                column(1, actionButton(inputId = "next_transfer_connectivity", label = "Next", icon = icon("arrow-right"))))
-                                              ),
-                                              tabPanel(title = "Security Product Pricing", value = "security",
-                                                       tags$div(id = "security_encryption", box( width = 12,
-                                                                                                 collapsible = T, collapsed = F,  solidHeader = T, title = "Safetech Encryption ", status = "primary",
-                                                                                                 fluidRow(column(3, numericInput(inputId = "safetech_encryption_items", label = "Safetech Encryption Items", value = 0)),
-                                                                                                          column(3, numericInput(inputId = "safetech_encryption_per_item_fee", label = "Safetech Encryption Per Item Fee", value = 0)), 
-                                                                                                          column(3, numericInput(inputId = "safetech_encryption_monthly_fee", label = "Safetech Encryption Monthly Fee", value = 0))),
-                                                                                                 fluidRow(column(12, 
-                                                                                                                 prettyCheckboxGroup(inputId = "terminal_type",label = "Terminal Type",choices = c("Verifone", "Magtek", "Ingenico"), selected = character(0),inline = TRUE,  status = "primary"))
-                                                                                                 ),
-                                                                                                 fluidRow(column(3, numericInput(inputId = "ingenico_percent_encyption_items", label = "Ingenico % of Encryption Items", value = 0, min = 0, max = 100)))
-                                                       )),
-                                                       tags$div(id = "security_tokenization", box( width = 12,
-                                                                                                   collapsible = T, collapsed = F,  solidHeader = T, title = "Safetech Tokenization", status = "primary",
-                                                                                                   fluidRow(column(3, numericInput(inputId = "safetech_tokenization_items", label = "Safetech Tokenization Items", value = 0)),
-                                                                                                            column(3, numericInput(inputId = "safetech_tokenization_per_item_fee", label = "Safetech Tokenization Per Item Fee", value = 0)), 
-                                                                                                            column(3, numericInput(inputId = "safetech_tokenization_monthly_fee", label = "Safetech Tokenization Monthly Fee", value = 0))))),
-                                                       tags$div(id = "security_page_encryption", box( width = 12,
-                                                                                                      collapsible = T, collapsed = F,  solidHeader = T, title = "Safetech Page Encryption", status = "primary",
-                                                                                                      fluidRow(column(3, numericInput(inputId = "safetech_page_encryption_items", label = "Safetech Page Encryption Items", value = 0)),
-                                                                                                               column(3, numericInput(inputId = "safetech_page_encryption_per_item_fee", label = "Safetech Page Encryption Per Item Fee", value = 0)), 
-                                                                                                               column(3, numericInput(inputId = "safetech_page_encryption_monthly_fee", label = "Safetech Page Encryption Monthly Fee", value = 0)))
-                                                       )),
-                                                       tags$div(id = "security_fraud", box( width = 12,
-                                                                                            collapsible = T, collapsed = F,  solidHeader = T, title = "Safetech Fraud", status = "primary",
-                                                                                            fluidRow(column(3, numericInput(inputId = "safetech_fraud_items", label = "Safetech Fraud Items", value = 0)),
-                                                                                                     column(3, numericInput(inputId = "safetech_fraud_per_item_fee", label = "Safetech Fraud Per Item Fee", value = 0))
-                                                                                            ),
-                                                                                            fluidRow(column(2, tags$p(tags$strong("Elect Target & LexisNexis?"))),
-                                                                                                     column(1, switchInput( inputId = "", onStatus = "success",  onLabel = "Yes", offLabel = "No", size = 'mini' , value = F)))
-                                                       )),
-                                                       fluidRow(column(1, actionButton(inputId = "prev_security", label = "Prev", icon = icon("arrow-left"))),
-                                                                column(10),
-                                                                column(1, actionButton(inputId = "next_security", label = "Next", icon = icon("arrow-right"))))
-                                              ),
-                                              tabPanel(title = "ChaseNet/ChasePay", value = "cstm_chnet_chpay",
-                                                       box( width = 12,
-                                                            collapsible = T, collapsed = F,  solidHeader = T, title = "Credit & Debit Processing Pricing", status = "primary",
-                                                            fluidRow(column(3, tags$p("___")), column(2, tags$a("Cents per Transaction")), column(2, tags$a("%  on Sales"))),
-                                                            fluidRow(column(3,tags$p("ChaseNet/Chase Pay Credit/Sig Debit Markup")), column(2, numericInput(inputId = "",label = "", value = 0)), column(2,  numericInput(inputId = "", label = "", value = 0, min = 0, max = 100))),
-                                                            fluidRow(column(3,tags$p("ChaseNet PIN Debit Markup")), column(2, numericInput(inputId = "",label = "", value = 0)), column(2, numericInput(inputId = "", label = "", value = 0))),
-                                                            br(), br(), 
-                                                            fluidRow(column(3, tags$p("ChaseNet/Chase Pay Credit MDR")), column(2, disabled(numericInput(inputId = "", label = "", value = 0))), column(2, disabled(numericInput(inputId = "", label = "",value = 0, min = 0, max = 100)) )),
-                                                            fluidRow(column(3,tags$p("ChaseNet/Chase Pay Sig Debit MDR")), column(2, disabled(numericInput(inputId = "", label = "",value = 0))), column(2, disabled(numericInput(inputId = "", label = "",value = 0, min = 0, max = 100)))),
-                                                            fluidRow(column(3,tags$p("ChaseNet PIN Debit MDR")), column(2, disabled(numericInput(inputId = "", label = "",value = 0))), column(2,disabled(numericInput(inputId = "", label = "",value = 0, min = 0, max = 100)) ))
-                                                       ),
-                                                       fluidRow(column(1, actionButton(inputId = "prev_cstm_chnet_chpay", label = "Prev", icon = icon("arrow-left"))),
-                                                                column(10),
-                                                                column(1, actionButton(inputId = "next_cstm_chnet_chpay", label = "Next", icon = icon("arrow-right"))))
-                                              ),
-                                              tabPanel(title = "Referral Partner", value = "cstm_ref_part",
-                                                       box( width = 12,
-                                                            collapsible = T, collapsed = F,  solidHeader = T, title = "Credit & Debit Processing Pricing", status = "primary", 
-                                                            fluidRow(column(3, numericInput(inputId = "", label = "Rev Share % to Referral Partner", value = 0, min = 0, max = 100), 
-                                                                            numericInput(inputId = "", label = "Rev Share Per Item Expense", value = 0.05), 
-                                                                            numericInput(inputId = "", label = "Rev Share Setup Expense", value = 0), 
-                                                                            numericInput(inputId = "", label = "Rev Share Monthly Expense", value = 5)),
-                                                                     column(3, numericInput(inputId = "rebate_percent_on_net_volume", label = "Rebate % on Net Volume", value = 0, min = 0, max = 100), 
-                                                                            numericInput(inputId = "rebate_dollar_per_tran", label = "Rebate $ per Transaction", value = 0),
-                                                                            numericInput(inputId = "rebate_setup", label = "Rebate - Setup", value = 0), 
-                                                                            numericInput(inputId = "rebate_monthly", label = "Rebate - Monthly", value = 0)))
-                                                       ),
-                                                       fluidRow(column(1, actionButton(inputId = "prev_cstm_ref_part", label = "Prev", icon = icon("arrow-left"))),
-                                                                column(10),
-                                                                column(1, actionButton(inputId = "next_cstm_ref_part", label = "Next", icon = icon("arrow-right"))))
+                                                                column(1, actionButton(inputId = "next_demat_forex", label = "Next", icon = icon("arrow-right"))))
                                               ),
                                               tabPanel(title = "Summary", value = "summary",
                                                        
-                                                       box( width = 6,
-                                                            collapsible = T, collapsed = F,  solidHeader = T, title = "Merchant P&A", status = "primary", 
-                                                            tableOutput(outputId = "summ_table")
-                                                       ),
-                                                       box( width = 6,
-                                                            collapsible = T, collapsed = F,  solidHeader = T, title = "Comparison", status = "primary",
-                                                            tableOutput(outputId = "summ_table1")
-                                                       ),
-                                                       box(width =12, collapsible = T, collapsed = F,  solidHeader = T, title = "Comparison Plot", status = "primary",
-                                                           plotOutput(outputId = "plt")),
-                                                       box(width =12, collapsible = T, collapsed = F,  solidHeader = T, title = "Schedule", status = "primary",
-                                                           downloadButton("downloadData", label = "Download Schedule")),
-                                                       fluidRow(column(1, actionButton(inputId = "prev_summary", label = "Prev", icon = icon("arrow-left"))))
+                                                       # box( width = 12,collapsible = F, collapsed = F,  solidHeader = T, title = "Merchant P&A", status = "primary", 
+                                                       # tableOutput(outputId = "summ_table")
+                                                       fluidPage(align="center",column(8, tags$h1("Congratulations! You have succesfully completed filling the form."))),
+                                                       tags$br(), tags$br(), tags$br(), tags$br(),
+                                                       fluidPage(align="center",
+                                                                 fluidRow(tags$u(tags$strong("What's next:"))),
+                                                                 fluidRow(tags$p("We have received your preferences, we will verify your details & notify you when the account is succesfully opened.")),
+                                                                 fluidRow(column(1, actionButton(inputId = "prev_summary", label = "Prev", icon = icon("arrow-left")))
+                                                                 )
+                                                       )
                                               )
                                    )
                            )
@@ -530,12 +395,8 @@ server <- function(input, output, session) {
                               # prettyOptions = list( status = 'primary'), 
                               selected = l[s])
   }
-  tabs_list <- c("main", "standard_main","cstm_main", 
-                 # "cre_and_deb",
-                 "cstm_cre_deb_inf" , "cstm_cre_deb_pri", "cstm_cre_opt" , "cstm_ecp_info", "cstm_ecp_pri", "transfer_connectivity", "security", "cstm_chnet_chpay", "cstm_ref_part", "summary")
-  tabs_enabled <-  c(T,F,F,F,
-                     # F,
-                     F,F,F,F,F,F,F,F,F)
+  tabs_list <- c("main", "standard_main","cstm_main", "credit" , "debit", "ecp_upi" , "demat_forex", "summary")
+  tabs_enabled <-  c(T,F,F,F, F,F,F,F)
   products_list <- c('si','ff','fi','asl','pcp','pdp','pdc','eod', 'ecp', 'pa', 'ipwm', 'mc')
   products_enabled <- c(T,T,T,F,F,F,F,F,F,F,F,F)
   products_selected <- c(F,F,F,F,F,F,F,F,F,F,F,F)
@@ -553,7 +414,7 @@ server <- function(input, output, session) {
   #                                       Page Navigation
   #==========================================================================================
   observeEvent( {
-    input$next_cstm_cre_deb_inf | input$next_cstm_cre_deb_pri | input$next_cstm_cre_opt | input$next_cstm_ecp_info | input$next_cstm_ecp_pri  | input$next_cstm_chnet_chpay | input$next_cstm_ref_part | input$next_transfer_connectivity | input$next_security | input$next_standard_main
+    input$next_credit | input$next_cstm_cre_deb_pri | input$next_ecp_upi | input$next_demat_forex | input$next_standard_main
   },
   {
     curpos <-  which(tabs_list == cur_page())
@@ -567,7 +428,7 @@ server <- function(input, output, session) {
   }
   )
   observeEvent( { 
-    input$prev_cstm_cre_deb_inf | input$prev_cstm_cre_deb_pri | input$prev_cstm_cre_opt | input$prev_cstm_ecp_info | input$prev_cstm_ecp_pri  | input$prev_cstm_chnet_chpay | input$prev_cstm_ref_part | input$prev_transfer_connectivity | input$prev_security  | input$prev_cstm_main | input$prev_standard_main |  input$prev_summary}, 
+    input$prev_credit | input$next_debit | input$prev_ecp_upi | input$prev_demat_forex | input$prev_cstm_main | input$prev_standard_main |  input$prev_summary}, 
     {
       curpos <-  which(tabs_list == cur_page())
       enabled_page_indices <- which(tabs_enabled)[which(tabs_enabled) < curpos]
@@ -615,28 +476,18 @@ server <- function(input, output, session) {
   observeEvent(input$next_cstm_main, {
     ##### show all relevant elements & hide the rest
     tabs_enabled[-c(1,2,3)] <<- tabs_enabled[-c(1,2,3)] & F
-    if("Credit" %in% input$mop | "PIN-Based Debit" %in% input$mop | "PINless Debit" %in% input$mop){
-      tabs_enabled[tabs_list == "cstm_cre_deb_inf"] <<- T
-      tabs_enabled[tabs_list == "cstm_cre_deb_pri"] <<- T
+    if("Credit" %in% input$mop ){
+      tabs_enabled[tabs_list == "credit"] <<- T
     }
-    if("Credit" %in% input$mop){
-      tabs_enabled[tabs_list == "cre_and_deb"] <<- T
+    if("Debit" %in% input$mop){
+      tabs_enabled[tabs_list == "debit"] <<- T
     }
-    if("pcl3" %in% input$processing_options | "au" %in% input$processing_options | "plbm" %in% input$processing_options | "mc" %in% input$processing_options | "Fraud Advice Reporting" %in% input$analytics_products){
-      tabs_enabled[tabs_list == "cstm_cre_opt"] <<- T
-      tabs_enabled[tabs_list == "cre_and_deb"] <<- T
+    if("Electronic Check (ECP)" %in% input$mop | "UPI" %in% input$mop){
+      tabs_enabled[tabs_list == "ecp_upi"] <<- T
     }
-    if("Electronic Check (ECP)" %in% input$mop ){
-      tabs_enabled[tabs_list == "cstm_ecp_info"] <<- T
-      tabs_enabled[tabs_list == "cstm_ecp_pri"] <<- T
+    if("Demat" %in% input$mop | "Forex" %in% input$mop){
+      tabs_enabled[tabs_list == "demat_forex"] <<- T
     }
-    if("UPI" %in% input$mop ){
-      tabs_enabled[tabs_list == "cstm_chnet_chpay"] <<- T
-    }
-    if(length(input$security_products) > 0) {
-      tabs_enabled[tabs_list == "security"] <<-T
-    }
-    tabs_enabled[tabs_list == "transfer_connectivity"] <<- T
     tabs_enabled[tabs_list == "summary"] <<- T
     # print(tabs_enabled)
     load_pages(tabs_list, tabs_enabled)
@@ -651,23 +502,12 @@ server <- function(input, output, session) {
       updateTabsetPanel(session, "new", selected = target_page)
     }
   })
-  ### MCC update placed in startup segment
   observeEvent({input$mop}, {
     
     
     if("Credit" %in% input$mop){
-      # shinyjs::showElement(id = "amex")
-      # shinyjs::showElement(id = "discover")
-      # shinyjs::showElement(id = "voice_auth_ratio")
-      # shinyjs::showElement(id = 'analytics_products')
-      # shinyjs::showElement(id = "voice_auth_section")
       products_enabled[products_list %in% c('asl', 'pcp')]  <<- T
     }else{
-      # shinyjs::hideElement(id = "amex")
-      # shinyjs::hideElement(id = "discover")
-      # shinyjs::hideElement(id = "voice_auth_ratio")
-      # shinyjs::hideElement(id = 'analytics_products')
-      # shinyjs::hideElement(id = "voice_auth_section")
       products_enabled[products_list %in% c('asl', 'pcp')]  <<- F
     }
     if("Debit" %in% input$mop ){products_enabled[products_list  %in% c('pdp', 'pdc', 'eod')]  <<- T}
