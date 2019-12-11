@@ -21,4 +21,4 @@ This was possible by using:
 3. UpdateInput functions in Shiny Package
 
 ### Credit Card
-![Credit Card](images/credit.PNG)
+![Credit Card](images/Credit.PNG)
