@@ -140,16 +140,19 @@ ui <- dashboardPage(
                                                              
                                                            ),
                                                            fluidRow(
+                                                             column(3, textInput(inputId = "cre_name_on_card", label = "Name on the Card:", placeholder = "Name to Display"))
+                                                           ),
+                                                           fluidRow(
                                                              column(3, numericInput(inputId = "salary", label = "Annual Income:", value = 50000,min = 25000, step = 1000))
                                                            ),
                                                            fluidRow(
-                                                             column(6, checkboxGroupInput(inputId = "credit_category", label = "Category", inline = T, choices = c("Premium cards", "Featured Cards", "Co Branded Cards", "Other Cards"))),
-                                                             column(6, checkboxGroupInput(inputId = "reward_type", label = "Rewards Type", inline = T, choices = c("Travel", "Movie", "Fuel", "Shopping")))
+                                                             column(6, checkboxGroupInput(inputId = "cre_category", label = "Category", inline = T, choices = c("Premium cards", "Featured Cards", "Co Branded Cards", "Other Cards"))),
+                                                             column(6, checkboxGroupInput(inputId = "cre_reward_type", label = "Rewards Type", inline = T, choices = c("Travel", "Movie", "Fuel", "Shopping")))
                                                            ),
                                                            
                                                            fluidRow(
                                                              column(12, 
-                                                                    radioGroupButtons(inputId = "card_type", label = "Choose a card:", 
+                                                                    radioGroupButtons(inputId = "cre_card_type", label = "Choose a card:", 
                                                                                       choices = c("Standard", "Rewards","League Platinum", "Royal signature", "Corporate Platinum", "Corporate Signature", "Elite Club", "Elite Planitum", "Elite Signature"),
                                                                                       selected = "Standard", individual = T, status = "primary", checkIcon = list(yes = icon("ok", lib = "glyphicon"))
                                                                     )
@@ -164,7 +167,7 @@ ui <- dashboardPage(
                                                                      fluidRow(column(3, numericInput(inputId = "ap_cre_pinless_credit", label = "Pinless Credit Limit:",value = 5000, min = 2000, step = 1000))),
                                                                      fluidRow(column(3, selectInput(inputId = "ap_cre_lounge_access", label = "Lounge Access:", choices = c("Standard", "Premium", "Business"), selected = "x1"))),
                                                                      
-                                                                     )
+                                                                )
                                                        ),
                                                        
                                                        
@@ -174,61 +177,94 @@ ui <- dashboardPage(
                                               ),
                                               tabPanel(title = "Debit", value = "debit", 
                                                        box( width = 12,
-                                                            collapsible = T, collapsed = F,  solidHeader = T, title = "Credit & Debit Processing Pricing", status = "primary",
+                                                            collapsible = T, collapsed = F,  solidHeader = T, title = "Debit Card Info", status = "primary",
+                                                            fluidRow(
+                                                              column(3, textInput(inputId = "de_name_on_card", label = "Name on the Card:", placeholder = "Name to Display"))
+                                                            ),
+                                                            fluidRow(
+                                                              column(6, checkboxGroupInput(inputId = "dre_category", label = "Category", inline = T, choices = c("Premium cards", "Featured Cards", "Co Branded Cards", "Other Cards"))),
+                                                              column(6, checkboxGroupInput(inputId = "dre_reward_type", label = "Rewards Type", inline = T, choices = c("Travel", "Movie", "Fuel", "Shopping")))
+                                                            ),
+                                                            
+                                                            fluidRow(
+                                                              column(12, 
+                                                                     radioGroupButtons(inputId = "dre_card_type", label = "Choose a card:", 
+                                                                                       choices = c("Standard", "Rewards","League Platinum", "Royal signature", "Corporate Platinum", "Corporate Signature", "Elite Club", "Elite Planitum", "Elite Signature"),
+                                                                                       selected = "Standard", individual = T, status = "primary", checkIcon = list(yes = icon("ok", lib = "glyphicon"))
+                                                                     )
+                                                              )
+                                                            )
                                                        ),
                                                        
                                                        tags$div(id = "debit_ap", 
                                                                 box( width = 12,
-                                                                     collapsible = T, collapsed = F,  solidHeader = T, title = "Debit Card Additional Products Info", status = "primary")
+                                                                     collapsible = T, collapsed = F,  solidHeader = T, title = "Debit Card Additional Products Info", status = "primary",
+                                                                     fluidRow(column(3, numericInput(inputId = "ap_de_pinless", label = "Pinless Debit Limit:",value = 5000, min = 2000, step = 1000))),
+                                                                     fluidRow(column(3, fileInput(inputId = "ap_de_photo", label = "Photo on Debit Card:"))),
+                                                                     fluidRow(column(3, numericInput(inputId = "ap_de_emi_debit", label = "EMI on Debit:",value = 5000, min = 2000, step = 1000))),
+                                                                     
+                                                                )
                                                        ),
                                                        fluidRow(column(1, actionButton(inputId = "next_debit", label = "Prev", icon = icon("arrow-left"))),
                                                                 column(10),
                                                                 column(1, actionButton(inputId = "next_cstm_cre_deb_pri", label = "Next", icon = icon("arrow-right"))))
                                               ), 
-                                              tabPanel(title = "ECP & UPI", value = "ecp_upi",
+                                              tabPanel(title = "Others", value = "others",
                                                        
                                                        tags$div(id="ecp",
                                                                 box(width = 12,
                                                                     collapsible = T, collapsed = F,  solidHeader = T, title = "Check processing", status = "primary",
-                                                                )
-                                                       ),
-                                                       
-                                                       tags$div(id="upi", 
-                                                                box( width = 12,
-                                                                     collapsible = T, collapsed = F,  solidHeader = T, title = "UPI", status = "primary",
-                                                                )
-                                                       ),
-                                                       
-                                                       
-                                                       fluidRow(column(1, actionButton(inputId = "prev_ecp_upi", label = "Prev", icon = icon("arrow-left"))),
-                                                                column(10),
-                                                                column(1, actionButton(inputId = "next_ecp_upi", label = "Next", icon = icon("arrow-right"))))
-                                              )
-                                              # )
-                                              ,
-                                              tabPanel(title = "Demat & Forex", value = "demat_forex",
-                                                       tags$div(id="demat",
-                                                                box(width = 12,
-                                                                    collapsible = T, collapsed = F,  solidHeader = T, title = "Demat Trading Information", status = "primary",
+                                                                    fluidRow(
+                                                                      column(2, tags$p(tags$strong("Send funds by Electronic Checks ?"))),
+                                                                      column(1, switchInput( inputId = "ec_send", onStatus = "success", offStatus = 'danger', onLabel = "Yes", offLabel = "No", size = 'mini' , value = F))
+                                                                    ),
+                                                                    fluidRow(
+                                                                      column(2, tags$p(tags$strong("Receive funds by Electronic Checks ?"))),
+                                                                      column(1, switchInput( inputId = "ec_receive", onStatus = "success", offStatus = 'danger', onLabel = "Yes", offLabel = "No", size = 'mini' , value = F))
+                                                                    )
                                                                 )
                                                        ),
                                                        
                                                        tags$div(id="forex", 
                                                                 box( width = 12,
                                                                      collapsible = T, collapsed = F,  solidHeader = T, title = "Foreign Exchange Information", status = "primary",
+                                                                     fluidRow(column(12, radioGroupButtons(inputId = "", label = "Select Currencies", choices = c("USD", "Euro", "Pound Sterling", "SGD", "UAE Dirham", "CAD", "Hong Kong Dollar", "Japan - Yen", "China - Yuan"), selected = "USD", status = 'primary', individual = T))),
+                                                                     fluidRow(column(3, tags$p(tags$strong("Want to exchange in other currencies ?"))),
+                                                                              column(1, switchInput( inputId = "forex_others", onStatus = "success", offStatus = 'danger', onLabel = "Yes", offLabel = "No", size = 'mini' , value = F)),
+                                                                              column(6, tags$p("We will get in touch with you about exclusive pricing."))
+                                                                     ),
+                                                                     
+                                                                     
                                                                 )
                                                        ),
-                                                       
-                                                       tags$div(id = "demat_forex_ap", 
+                                                       tags$div(id = "others_ap", 
                                                                 box( width = 12,
-                                                                     collapsible = T, collapsed = F,  solidHeader = T, title = "Demat & Forex Additional Products Info", status = "primary")
+                                                                     collapsible = T, collapsed = F,  solidHeader = T, title = "Other Additional Products Info", status = "primary",
+                                                                     fluidRow(column(3, tags$div(id= "ecp_ap", tags$strong(tags$u(tags$p("ECP:")))))),
+                                                                     fluidRow(
+                                                                       column(3, tags$div(id = "ec_receive_flag_head", tags$p(tags$strong("Enable EC Validation for incoming checks ?")))),
+                                                                       column(1,  tags$div(id = "ec_receive_flag_switch", switchInput( inputId = "ec_receive_flag_switch_", onStatus = "success", offStatus = 'danger', onLabel = "Yes", offLabel = "No", size = 'mini' , value = F)))
+                                                                     ),
+                                                                     fluidRow(column(3, tags$div(id= "demat_ap", tags$strong(tags$u(tags$p("Demat:")))))),
+                                                                     fluidRow(
+                                                                       column(2, tags$div(id = "portfoli_smart_summary_head", tags$p(tags$strong("Portfolio Summary ?")))),
+                                                                       column(1,  tags$div(id = "portfoli_smart_summary_switch", switchInput( inputId = "portfoli_smart_summary_switch_", onStatus = "success", offStatus = 'danger', onLabel = "Yes", offLabel = "No", size = 'mini' , value = F))),
+                                                                       column(2, tags$div(id = "portfoli_forecast_head", tags$p(tags$strong("Portfolio Forecast ?")))),
+                                                                       column(1,  tags$div(id = "portfoli_forecast_switch", switchInput( inputId = "portfoli_forecast_switch_", onStatus = "success", offStatus = 'danger', onLabel = "Yes", offLabel = "No", size = 'mini' , value = F)))
+                                                                       
+                                                                     ),
+                                                                     fluidRow(column(3, tags$div(id= "forex_ap", tags$strong(tags$u(tags$p("Forex:")))))),
+                                                                     fluidRow(
+                                                                       column(2, tags$div(id = "instant_wire_head", tags$p(tags$strong("Instant Wire Transfer ?")))),
+                                                                       column(1,  tags$div(id = "instant_wire_switch", switchInput( inputId = "instant_wire_switch_", onStatus = "success", offStatus = 'danger', onLabel = "Yes", offLabel = "No", size = 'mini' , value = F)))
+                                                                     )
+                                                                )
                                                        ),
-                                                       fluidRow(column(1, actionButton(inputId = "prev_demat_forex", label = "Prev", icon = icon("arrow-left"))),
+                                                       fluidRow(column(1, actionButton(inputId = "prev_ecp_upi", label = "Prev", icon = icon("arrow-left"))),
                                                                 column(10),
-                                                                column(1, actionButton(inputId = "next_demat_forex", label = "Next", icon = icon("arrow-right"))))
+                                                                column(1, actionButton(inputId = "next_ecp_upi", label = "Next", icon = icon("arrow-right"))))
                                               ),
                                               tabPanel(title = "Summary", value = "summary",
-                                                       
                                                        fluidPage(align="center",column(8, tags$h1("Congratulations! You have succesfully completed filling the form."))),
                                                        tags$br(), tags$br(), tags$br(), tags$br(),
                                                        fluidPage(align="center",
@@ -327,8 +363,8 @@ server <- function(input, output, session) {
                               # prettyOptions = list( status = 'primary'), 
                               selected = l[s])
   }
-  tabs_list <- c("main", "standard_main","cstm_main", "credit" , "debit", "ecp_upi" , "demat_forex", "summary")
-  tabs_enabled <-  c(T,F,F,F, F,F,F,F)
+  tabs_list <- c("main", "standard_main","cstm_main", "credit" , "debit", "others", "summary")
+  tabs_enabled <-  c(T,F,F,F,F,F,F)
   products_list <- c('si','ff','fi','asl','pcp', 'la', 'pdp','pdc','eod', 'ecp', 'pa', 'ipwm', 'mc')
   products_enabled <- c(T,T,T,F,F,F,F,F,F,F,F,F,F)
   products_selected <- c(F,F,F,F,F,F,F,F,F,F,F,F,F)
@@ -345,7 +381,7 @@ server <- function(input, output, session) {
   #                                       Page Navigation
   #==========================================================================================
   observeEvent( {
-    input$next_credit | input$next_cstm_cre_deb_pri | input$next_ecp_upi | input$next_demat_forex | input$next_standard_main
+    input$next_credit | input$next_cstm_cre_deb_pri | input$next_ecp_upi | input$next_standard_main
   },
   {
     curpos <-  which(tabs_list == cur_page())
@@ -359,7 +395,7 @@ server <- function(input, output, session) {
   }
   )
   observeEvent( { 
-    input$prev_credit | input$next_debit | input$prev_ecp_upi | input$prev_demat_forex | input$prev_cstm_main | input$prev_standard_main |  input$prev_summary}, 
+    input$prev_credit | input$next_debit | input$prev_ecp_upi | input$prev_cstm_main | input$prev_standard_main |  input$prev_summary}, 
     {
       curpos <-  which(tabs_list == cur_page())
       enabled_page_indices <- which(tabs_enabled)[which(tabs_enabled) < curpos]
@@ -412,17 +448,11 @@ server <- function(input, output, session) {
     if("Debit" %in% input$mop){
       tabs_enabled[tabs_list == "debit"] <<- T
     }
-    if("Electronic Check (ECP)" %in% input$mop | "UPI" %in% input$mop){
-      tabs_enabled[tabs_list == "ecp_upi"] <<- T
+    if("Electronic Check (ECP)" %in% input$mop | "Demat" %in% input$mop | "Forex" %in% input$mop){
+      tabs_enabled[tabs_list == "others"] <<- T
       
       if("Electronic Check (ECP)" %in% input$mop ){shinyjs::showElement(id = 'ecp')}
       else{shinyjs::hideElement(id = 'ecp')}
-      
-      if("UPI" %in% input$mop ){shinyjs::showElement(id = 'upi')}
-      else{shinyjs::hideElement(id = 'upi')}
-    }
-    if("Demat" %in% input$mop | "Forex" %in% input$mop){
-      tabs_enabled[tabs_list == "demat_forex"] <<- T
       
       if("Demat" %in% input$mop ){shinyjs::showElement(id = 'demat')}
       else{shinyjs::hideElement(id = 'demat')}
@@ -430,6 +460,7 @@ server <- function(input, output, session) {
       if("Forex" %in% input$mop ){shinyjs::showElement(id = 'forex')}
       else{shinyjs::hideElement(id = 'forex')}
     }
+    
     tabs_enabled[tabs_list == "summary"] <<- T
     
     # print(tabs_enabled)
@@ -449,11 +480,24 @@ server <- function(input, output, session) {
     if('asl' %in% input$processing_options | 'pcp' %in% input$processing_options | 'la' %in% input$processing_options){shinyjs::showElement(id = "credit_ap")}
     else{shinyjs::hideElement(id = "credit_ap")}
     
-    if('pdp' %in% input$processing_options | 'pdc' %in% input$processing_options | 'eod' %in% input$processing_options){shinyjs::showElement(id = "debitt_ap")}
-    else{shinyjs::hideElement(id = "debitt_ap")}
+    if('pdp' %in% input$processing_options | 'pdc' %in% input$processing_options | 'eod' %in% input$processing_options){shinyjs::showElement(id = "debit_ap")}
+    else{shinyjs::hideElement(id = "debit_ap")}
     
-    if('pa' %in% input$processing_options | 'ipwm' %in% input$processing_options | 'mc' %in% input$processing_options){shinyjs::showElement(id = "demat_forex_ap")}
-    else{shinyjs::hideElement(id = "demat_forex_ap")}
+    if('pa' %in% input$processing_options | 'ipwm' %in% input$processing_options | 'mc' %in% input$processing_options | 'ecp' %in% input$processing_options){
+      shinyjs::showElement(id = "others_ap")
+      if('pa' %in% input$processing_options | 'ipwm' %in% input$processing_options){shinyjs::showElement(id = "demat_ap")}
+      else{shinyjs::hideElement(id = "demat_ap")}
+      
+      if('mc' %in% input$processing_options){shinyjs::showElement(id = "forex_ap")}
+      else{shinyjs::hideElement(id = "forex_ap")}
+      
+      if('ecp' %in% input$processing_options){shinyjs::showElement(id = "ecp_ap")}
+      else{shinyjs::hideElement(id = "ecp_ap")}
+      
+    }
+    else{
+      shinyjs::hideElement(id = "others_ap")
+    }
     
     
     ########### Additional Products - Individual Elements
@@ -466,6 +510,54 @@ server <- function(input, output, session) {
     
     if('la' %in% input$processing_options){shinyjs::showElement(id = "ap_cre_lounge_access")}
     else{shinyjs::hideElement(id = "ap_cre_lounge_access")}
+    
+    
+    ### Debit
+    if('pdp' %in% input$processing_options){shinyjs::showElement(id = "ap_de_pinless")}
+    else{shinyjs::hideElement(id = "ap_de_pinless")}
+    
+    if('pdc' %in% input$processing_options){shinyjs::showElement(id = "ap_de_photo")}
+    else{shinyjs::hideElement(id = "ap_de_photo")}
+    
+    if('eod' %in% input$processing_options){shinyjs::showElement(id = "ap_de_emi_debit")}
+    else{shinyjs::hideElement(id = "ap_de_emi_debit")}
+    
+    
+    ### Others
+    if('ecp' %in% input$processing_options){
+      shinyjs::showElement(id = "ec_receive_flag_head")
+      shinyjs::showElement(id = "ec_receive_flag_switch")
+    }
+    else{
+      shinyjs::hideElement(id = "ec_receive_flag_head")
+      shinyjs::hideElement(id = "ec_receive_flag_switch")
+    }
+    
+    if('pa' %in% input$processing_options){
+      shinyjs::showElement(id = "portfoli_smart_summary_head")
+      shinyjs::showElement(id = "portfoli_smart_summary_switch")
+      shinyjs::showElement(id = "portfoli_forecast_head")
+      shinyjs::showElement(id = "portfoli_forecast_switch")
+    }
+    else{
+      shinyjs::hideElement(id = "portfoli_smart_summary_head")
+      shinyjs::hideElement(id = "portfoli_smart_summary_switch")
+      shinyjs::hideElement(id = "portfoli_forecast_head")
+      shinyjs::hideElement(id = "portfoli_forecast_switch")
+    }
+    
+    
+    if('ipwm' %in% input$processing_options | 'mc' %in% input$processing_options ){
+      shinyjs::showElement(id = "instant_wire_head")
+      shinyjs::showElement(id = "instant_wire_switch")
+    }
+    else{
+      shinyjs::hideElement(id = "instant_wire_head")
+      shinyjs::hideElement(id = "instant_wire_switch")
+    }
+    
+    
+    
     
   })
   
@@ -501,6 +593,7 @@ server <- function(input, output, session) {
     else{shinyjs::hideElement(id = 'accnt_num', anim = T,  animType = 'slide')}
     
   })
+  
   
 }
 shinyApp(ui = ui, server = server)
