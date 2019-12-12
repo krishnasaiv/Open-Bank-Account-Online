@@ -22,3 +22,9 @@ This was possible by using:
 
 ### Credit Card
 ![Credit Card](images/Credit.PNG)
+
+### Debit Card
+![Debit Card](images/Debit.PNG)
+
+### Others
+![Others](images/Others.PNG)

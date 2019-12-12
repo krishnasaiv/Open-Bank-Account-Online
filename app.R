@@ -91,17 +91,25 @@ ui <- dashboardPage(
                                               tabPanel(title = "Standard pricing", value = "standard_main",
                                                        box(width=12,
                                                            collapsible = F, solidHeader = T, title = "Merchant Demographics", status = "primary",
-                                                           prettyRadioButtons(shape = "round",  animation = 'jelly',inputId = "primary_cust_type", label = "Primary Customer Type:", choices = c( "Consumers", "Other Businesses"),inline = T),
-                                                           prettyRadioButtons(shape = "round",  animation = 'jelly',inputId = "foreign_issued_txns",   label = "Foreign Issued Transactions:", choices = c( "Few", "Many"),inline = T),
-                                                           prettyRadioButtons(shape = "round",  animation = 'jelly',inputId = "equipment_type", label = "Equipment/POS Type:", 
-                                                                              choices = c( "Chase Mobile Checkout", "Chase Blue Terminal", "Virtual Terminal", "Authorize.Net"),selected ="Chase Mobile Checkout", inline = T)
-                                                       ),
-                                                       box(width=12, 
-                                                           collapsible = F, solidHeader = T, title = "Standard Pricing Options", status = "primary",
-                                                           radioGroupButtons(inputId = "bundled_pricing_options", label = "Bundled Pricing Options:", choices = c( "Swiped: 2.60% + $0.10,<br/>Keyed: 3.50% + $0.10", "2.90% +<br/> $0.25", "3.50% +<br/> $0.10"),
-                                                                             status = "primary", checkIcon = list(yes = icon("ok", lib = "glyphicon"))),
-                                                           radioGroupButtons(inputId = "interchange_pass_thru_pricing_options",label = "Interchange Pass Thru Pricing Options:",choices = c("0.35% + $0.10,<br/>$9.95 Monthly Fee", "0.55% + $0.10,<br/>$0 Monthly Fee"),
-                                                                             status = "primary", checkIcon = list(yes = icon("ok", lib = "glyphicon")), selected = character(0))
+                                                           fluidRow(
+                                                             column(3, textInput(inputId = "std_name_on_card", label = "Name on the Card:", placeholder = "Name to Display"))
+                                                           ),
+                                                           fluidRow(
+                                                             column(3, numericInput(inputId = "std_salary", label = "Annual Income:", value = 50000,min = 25000, step = 1000))
+                                                           ),
+                                                           fluidRow(
+                                                             column(6, checkboxGroupInput(inputId = "std_category", label = "Category", inline = T, choices = c("Premium cards", "Featured Cards", "Co Branded Cards", "Other Cards"))),
+                                                             column(6, checkboxGroupInput(inputId = "std_reward_type", label = "Rewards Type", inline = T, choices = c("Travel", "Movie", "Fuel", "Shopping")))
+                                                           ),
+                                                           
+                                                           fluidRow(
+                                                             column(12, 
+                                                                    radioGroupButtons(inputId = "std_card_type", label = "Choose a card:", 
+                                                                                      choices = c("Standard", "Rewards","League Platinum", "Royal signature", "Corporate Platinum", "Corporate Signature", "Elite Club", "Elite Planitum", "Elite Signature"),
+                                                                                      selected = "Standard", individual = T, status = "primary", checkIcon = list(yes = icon("ok", lib = "glyphicon"))
+                                                                    )
+                                                             )
+                                                           )
                                                        ),
                                                        fluidRow(column(1, actionButton(inputId = "prev_standard_main", label = "Prev", icon = icon("arrow-left"))),
                                                                 column(10),
