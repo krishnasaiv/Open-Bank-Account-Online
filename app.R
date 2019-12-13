@@ -88,7 +88,7 @@ ui <- dashboardPage(
                                                        ),
                                                        fluidRow(column(11), column(1, actionButton(inputId = "nxt_main", label = "Next", icon = icon("arrow-right"))))
                                               ),
-                                              tabPanel(title = "Standard pricing", value = "standard_main",
+                                              tabPanel(title = "Standard Account", value = "standard_main",
                                                        box(width=12,
                                                            collapsible = F, solidHeader = T, title = "Merchant Demographics", status = "primary",
                                                            fluidRow(
@@ -115,7 +115,7 @@ ui <- dashboardPage(
                                                                 column(10),
                                                                 column(1, actionButton(inputId = "next_standard_main", label = "Next", icon = icon("arrow-right"))))
                                               ),
-                                              tabPanel(title = "Custom Pricing", value = "cstm_main",
+                                              tabPanel(title = "Custom Account", value = "cstm_main",
                                                        
                                                        box(width = 12,
                                                            collapsible = F,  solidHeader = T, title = "Methods of Operation", status = "primary", #collapsed = F, 
