@@ -1,5 +1,7 @@
 # Open-Bank-Account-Online
-Sample app(created in R Shiny) to create online bank account
+This is a sample app/web-tool that can be used by commercial banks for easy on-boarding of their customers. This app is equipped with all the features that are required for a full blown app. 
+
+Clone & run the app in R for a more clear understanding.
 
 ## Home Page
 ![Home Page](images/homepage.png)
