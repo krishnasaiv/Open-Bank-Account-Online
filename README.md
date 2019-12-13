@@ -27,9 +27,10 @@ This was possible by using:
 ##### **Note about Page Navigation:**
 
 The next page to be loaded will be decided on the runtime based on the options selected.
-For example, in the below image 'Credit Card', we can see the tabs 'Credit', 'Debit', 'Others' that are being displayed. These pages will be displayed based on the selection we did in the 'Home Page - Custom'.
-If we selected only 'Credit', then we would have seen that only the 'Credit' page is visible.
-If we select 'Credit' & 'Debit', then we would have both 'Credit' & 'Debit' pages in the nav bar.
+For example, in the below image 'Credit Card', we can see the tabs 'Credit', 'Debit', 'Others' that are being displayed.
+These pages will be displayed based on the selection we did in the 'Home Page - Custom'.
+* If we selected only 'Credit', then we would have seen that only the 'Credit' page is visible.
+* If we select 'Credit' & 'Debit', then we would have both 'Credit' & 'Debit' pages in the nav bar.
 
 This is achieved by using JS selectors & functions(showElement/ hideElement) available in shinyjs.
 ------
