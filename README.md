@@ -24,7 +24,11 @@ This was possible by using:
 3. UpdateInput functions in Shiny Package
 
 --------
+
+
+
 ##### **Note about Page Navigation:**
+------
 The next page to be loaded will be decided on the runtime based on the options selected.
 For example, in the below image 'Credit Card', we can see the tabs 'Credit', 'Debit', 'Others' that are being displayed. These pages will be displayed based on the selection we did in the 'Home Page - Custom'.
 If we selected only 'Credit', then we would have seen that only the 'Credit' page is visible.
