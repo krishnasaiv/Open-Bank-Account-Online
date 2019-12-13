@@ -33,6 +33,8 @@ These pages will be displayed based on the selection we did in the 'Home Page - 
 * If we select 'Credit' & 'Debit', then we would have both 'Credit' & 'Debit' pages in the nav bar.
 
 This is achieved by using JS selectors & functions(showElement/ hideElement) available in shinyjs.
+
+
 ------
 ### Credit Card
 ![Credit Card](images/Credit.PNG)
