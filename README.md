@@ -2,7 +2,7 @@
 Sample app(created in R Shiny) to create online bank account
 
 ### Home Page
-![Home Page](images/homepage.PNG)
+![Home Page](images/homepage.png)
 
 ### Products Selection Page
 ![Products Selection Page](images/custom_main.PNG)
