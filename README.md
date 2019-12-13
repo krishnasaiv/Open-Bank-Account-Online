@@ -1,10 +1,13 @@
 # Open-Bank-Account-Online
 Sample app(created in R Shiny) to create online bank account
 
-### Home Page
+## Home Page
 ![Home Page](images/homepage.png)
 
-### Products Selection Page
+### Home Page - Standard Account
+![Products Selection Page](images/standard_main.PNG)
+
+### Home Page - Custom Account
 ![Products Selection Page](images/custom_main.PNG)
 Only the products that are related to the Method of payment selected in top section are enabled in the below section.
 Conditionally enable Radio Button Options:
